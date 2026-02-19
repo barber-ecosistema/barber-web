@@ -13,8 +13,8 @@
             theme: {
                 extend: {
                     colors: {
-                        barber: '#2ecc71', // Verde Barber Studio
-                        client: '#3498db', // Azul Cliente
+                        barber: '#2ecc71',
+                        client: '#3498db',
                         dark: '#121212',
                         card: '#1e1e1e'
                     },
@@ -42,14 +42,12 @@
         .barber-gradient { background: linear-gradient(135deg, #2ecc71 0%, #000000 100%); }
         .client-gradient { background: linear-gradient(135deg, #3498db 0%, #000000 100%); }
         
-        /* Animación del switch */
         .switch-content { transition: all 0.5s ease-in-out; }
         .hidden-content { display: none; opacity: 0; transform: translateY(20px); }
         .visible-content { display: block; opacity: 1; transform: translateY(0); animation: fadeIn 0.8s forwards; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Floating Button Animation */
         .fab-float {
             position: fixed; bottom: 30px; right: 30px; z-index: 50;
             animation: float 4s ease-in-out infinite;
@@ -94,10 +92,19 @@
                     <a href="#faq-barbero" class="border border-gray-600 px-6 py-3 rounded-lg hover:border-white transition">Ver Dudas</a>
                 </div>
             </div>
-            <div class="md:w-1/2 relative" data-aos="fade-left">
-                <div class="absolute inset-0 bg-barber blur-[100px] opacity-20"></div>
-                <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="relative rounded-2xl border-2 border-barber shadow-2xl transform rotate-3 hover:rotate-0 transition duration-500" alt="App Barbero">
+            
+            <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0" data-aos="fade-left">
+                <div class="absolute inset-0 bg-barber blur-[100px] opacity-20 animate-pulse"></div>
+                <div class="relative w-full flex justify-center h-[500px]">
+                    <img src="Screenshot_20260218-090943_Barber Studio.jpg" class="absolute left-0 w-[55%] rounded-3xl border border-gray-800 shadow-[0_0_30px_rgba(46,204,113,0.3)] z-20 animate-float hover:scale-105 transition-transform duration-500 object-cover h-[450px]" alt="Agenda Barber Studio">
+                    <img src="Screenshot_20260218-090840_Barber Studio.jpg" class="absolute right-0 top-10 w-[55%] rounded-3xl border border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.8)] z-10 transform rotate-6 hover:rotate-0 hover:z-30 hover:scale-105 transition-all duration-500 object-cover h-[450px]" alt="Finanzas Barber Studio">
+                </div>
             </div>
+        </div>
+
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl font-bold mb-4">Potencia Visual para tu Negocio</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Revisa tu progreso con gráficos detallados de tus últimos 7 días. Controla tu meta mensual de ingresos y visualiza cada turno de forma clara y moderna.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
@@ -158,7 +165,7 @@
                         3. ¿Cómo funciona el Cierre Diario?
                         <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">La App suma todos los cortes "Completados" y los Ingresos Extra del día. A las 11:59 PM genera un reporte automático que se guarda en tu historial financiero. No tienes que sacar cuentas a mano.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">La App suma todos los cortes completados y los ingresos extra del día. A las 11:59 PM genera un reporte automático que se guarda en tu historial financiero. No tienes que sacar cuentas a mano.</p>
                 </details>
 
                 <details class="glass p-4 rounded-xl cursor-pointer group">
@@ -166,7 +173,7 @@
                         4. ¿Puedo agendar a alguien que no tiene la App?
                         <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Sí, usas el botón "Turno Rápido". Solo pones nombre, hora y precio. Se guarda al instante en tu agenda como un turno manual.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Sí, usas el botón Turno Rápido. Solo pones nombre, hora y precio. Se guarda al instante en tu agenda como un turno manual.</p>
                 </details>
 
                 <details class="glass p-4 rounded-xl cursor-pointer group">
@@ -182,7 +189,7 @@
                         6. ¿Qué pasa si cambio de teléfono?
                         <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Debes contactar a Soporte desde la App vieja o por WhatsApp para liberar tu ID. Una vez liberado, inicias sesión en el teléfono nuevo y se descargan todos tus datos (Clientes, Finanzas, Agenda) desde la nube.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Debes contactar a Soporte desde la App vieja o por WhatsApp para liberar tu ID. Una vez liberado, inicias sesión en el teléfono nuevo y se descargan todos tus datos desde la nube.</p>
                 </details>
 
                 <details class="glass p-4 rounded-xl cursor-pointer group">
@@ -198,7 +205,7 @@
                         8. ¿Cómo veo la Meta Mensual?
                         <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">En la pantalla principal hay una barra de progreso. Tú defines cuánto quieres ganar (ej. 80,000 CUP) y la barra se llena de verde a medida que cobras cortes durante el mes.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">En la pantalla principal hay una barra de progreso. Tú defines cuánto quieres ganar y la barra se llena de verde a medida que cobras cortes durante el mes.</p>
                 </details>
 
                 <details class="glass p-4 rounded-xl cursor-pointer group">
@@ -231,27 +238,36 @@
                     <a href="#faq-cliente" class="border border-gray-600 px-6 py-3 rounded-lg hover:border-white transition">Cómo Funciona</a>
                 </div>
             </div>
-            <div class="md:w-1/2 relative" data-aos="fade-left">
-                <div class="absolute inset-0 bg-client blur-[100px] opacity-20"></div>
-                <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="relative rounded-2xl border-2 border-client shadow-2xl transform -rotate-3 hover:rotate-0 transition duration-500" alt="App Cliente">
+            
+            <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0" data-aos="fade-left">
+                <div class="absolute inset-0 bg-client blur-[100px] opacity-30 animate-pulse"></div>
+                <div class="relative w-full flex justify-center h-[500px]">
+                    <img src="Screenshot_20260218-091057.jpg" class="absolute left-0 w-[55%] rounded-3xl border border-gray-800 shadow-[0_0_40px_rgba(52,152,219,0.3)] z-20 animate-float hover:scale-105 transition-transform duration-500 object-cover h-[450px]" alt="Mapa Barber Connect">
+                    <img src="Screenshot_20260218_095833.jpg" class="absolute right-0 top-12 w-[55%] rounded-3xl border border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.8)] z-10 transform -rotate-6 hover:rotate-0 hover:z-30 hover:scale-105 transition-all duration-500 object-cover h-[400px]" alt="Reserva Enviada Barber Connect">
+                </div>
             </div>
+        </div>
+
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl font-bold mb-4">La Ciudad en tus Manos</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Explora el mapa interactivo para descubrir talentos a tu alrededor. Visualiza la distancia en kilómetros, envía tu solicitud de reserva en dos toques y recibe la confirmación al instante.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
             <div class="glass p-8 rounded-2xl hover:border-client transition duration-300">
                 <div class="w-14 h-14 bg-blue-900/50 rounded-full flex items-center justify-center text-client text-2xl mb-4"><i class="fa-solid fa-map-location-dot"></i></div>
                 <h3 class="text-xl font-bold mb-2">Mapa en Vivo</h3>
-                <p class="text-gray-400">Usa tu GPS para ver barberías cercanas. Toca una y la app te guía directo hasta la puerta.</p>
+                <p class="text-gray-400">Usa tu GPS para ver barberías cercanas. Toca una y la app te muestra fotos, reseñas y su ubicación exacta.</p>
             </div>
             <div class="glass p-8 rounded-2xl hover:border-client transition duration-300">
                 <div class="w-14 h-14 bg-blue-900/50 rounded-full flex items-center justify-center text-client text-2xl mb-4"><i class="fa-solid fa-clock"></i></div>
                 <h3 class="text-xl font-bold mb-2">Reserva Fácil</h3>
-                <p class="text-gray-400">Elige día y hora. Envía la solicitud y recibe la confirmación al instante en tu móvil.</p>
+                <p class="text-gray-400">Elige día y hora. Envía la solicitud y recibe la confirmación al instante en tu móvil. Tu barbero sabrá que vas en camino.</p>
             </div>
             <div class="glass p-8 rounded-2xl hover:border-client transition duration-300">
                 <div class="w-14 h-14 bg-blue-900/50 rounded-full flex items-center justify-center text-client text-2xl mb-4"><i class="fa-solid fa-star"></i></div>
                 <h3 class="text-xl font-bold mb-2">Califica</h3>
-                <p class="text-gray-400">Después del corte, deja tu reseña. Ayuda a otros a encontrar a los mejores barberos de la zona.</p>
+                <p class="text-gray-400">Después del corte, deja tu reseña. Ayuda a otros a encontrar a los mejores barberos de la zona para fortalecer la comunidad.</p>
             </div>
         </div>
 
@@ -264,7 +280,7 @@
                         1. ¿Cómo sé si el barbero aceptó mi cita?
                         <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Recibirás una notificación inmediata en tu celular. Además, en la sección "Mis Reservas", el turno cambiará de color naranja (Pendiente) a verde (Confirmado).</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Recibirás una notificación inmediata en tu celular. Además, en la sección Mis Reservas, el turno cambiará de color naranja a verde.</p>
                 </details>
 
                 <details class="glass p-4 rounded-xl cursor-pointer group">
@@ -280,7 +296,7 @@
                         3. ¿Puedo cancelar un turno si no puedo ir?
                         <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Sí. Tienes un botón de "Cancelar" en tus reservas. Al hacerlo, le notificamos al barbero al instante para que no pierda su tiempo.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Sí. Tienes un botón de Cancelar en tus reservas. Al hacerlo, le notificamos al barbero al instante para que no pierda su tiempo.</p>
                 </details>
 
                 <details class="glass p-4 rounded-xl cursor-pointer group">
@@ -357,8 +373,7 @@
     <script>
         AOS.init({ duration: 800, once: true });
 
-        // Links de descarga (REEMPLAZAR AQUÍ)
-        const linkBarber = "https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/Barber%20Studio.apk"; 
+        const linkBarber = "https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/barber%20studio.apk"; 
         const linkClient = "https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/Barber%20Conect.apk";
 
         const btnBarber = document.getElementById('btn-barber');
@@ -370,21 +385,18 @@
 
         function setMode(mode) {
             if (mode === 'barber') {
-                // Estilos Botones
                 btnBarber.classList.add('bg-barber', 'text-black', 'shadow-[0_0_20px_rgba(46,204,113,0.5)]');
                 btnBarber.classList.remove('text-barber', 'hover:bg-barber', 'hover:text-black');
                 
                 btnClient.classList.remove('bg-client', 'text-white', 'shadow-[0_0_20px_rgba(52,152,219,0.5)]');
                 btnClient.classList.add('text-client', 'hover:bg-client', 'hover:text-white');
 
-                // Contenido
                 sectionClient.classList.add('hidden', 'hidden-content');
                 sectionClient.classList.remove('visible-content');
                 
                 sectionBarber.classList.remove('hidden', 'hidden-content');
                 sectionBarber.classList.add('visible-content');
 
-                // Floating Btn
                 floatingBtn.classList.remove('bg-client', 'shadow-[0_0_30px_rgba(52,152,219,0.6)]');
                 floatingBtn.classList.add('bg-barber', 'text-black', 'shadow-[0_0_30px_rgba(46,204,113,0.6)]');
                 floatingBtn.href = linkBarber;
@@ -394,21 +406,18 @@
                 navSuffix.classList.add('text-barber');
 
             } else {
-                // Estilos Botones
                 btnClient.classList.add('bg-client', 'text-white', 'shadow-[0_0_20px_rgba(52,152,219,0.5)]');
                 btnClient.classList.remove('text-client', 'hover:bg-client', 'hover:text-white');
                 
                 btnBarber.classList.remove('bg-barber', 'text-black', 'shadow-[0_0_20px_rgba(46,204,113,0.5)]');
                 btnBarber.classList.add('text-barber', 'hover:bg-barber', 'hover:text-black');
 
-                // Contenido
                 sectionBarber.classList.add('hidden', 'hidden-content');
                 sectionBarber.classList.remove('visible-content');
                 
                 sectionClient.classList.remove('hidden', 'hidden-content');
                 sectionClient.classList.add('visible-content');
 
-                // Floating Btn
                 floatingBtn.classList.remove('bg-barber', 'text-black', 'shadow-[0_0_30px_rgba(46,204,113,0.6)]');
                 floatingBtn.classList.add('bg-client', 'text-white', 'shadow-[0_0_30px_rgba(52,152,219,0.6)]');
                 floatingBtn.href = linkClient;
@@ -419,13 +428,10 @@
             }
         }
 
-        // Inicializar Floating Btn
         floatingBtn.href = linkBarber;
 
-        // Listener para los botones de "Descargar APK" en el texto
         document.querySelectorAll('a[href="#descargar-barbero"]').forEach(el => el.href = linkBarber);
         document.querySelectorAll('a[href="#descargar-cliente"]').forEach(el => el.href = linkClient);
     </script>
 </body>
 </html>
-
