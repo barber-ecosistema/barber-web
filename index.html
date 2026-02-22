@@ -13,23 +13,39 @@
             theme: {
                 extend: {
                     colors: {
-                        barber: '#2ecc71',
-                        client: '#3498db',
-                        dark: '#121212',
-                        card: '#1e1e1e'
+                        barber: '#00ff88',
+                        barberdark: '#00cc6a',
+                        client: '#00d2ff',
+                        clientdark: '#00a3cc',
+                        dark: '#0a0a0a',
+                        card: '#121212'
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 7s ease-in-out 1s infinite',
                         'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'blob': 'blob 15s infinite',
+                        'tilt': 'tilt 10s infinite linear'
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotate(2deg)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' }
+                        },
+                        tilt: {
+                            '0%, 50%, 100%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(1deg)' },
+                            '75%': { transform: 'rotate(-1deg)' }
                         },
                         'pulse-glow': {
-                            '0%, 100%': { opacity: 1, boxShadow: '0 0 20px #2ecc71' },
-                            '50%': { opacity: .5, boxShadow: '0 0 5px #2ecc71' },
+                            '0%, 100%': { opacity: 1, filter: 'drop-shadow(0 0 10px rgba(0,255,136,0.5))' },
+                            '50%': { opacity: .7, filter: 'drop-shadow(0 0 25px rgba(0,255,136,0.2))' },
                         }
                     }
                 }
@@ -37,336 +53,315 @@
         }
     </script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #000; overflow-x: hidden; }
-        .glass { background: rgba(30, 30, 30, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .barber-gradient { background: linear-gradient(135deg, #2ecc71 0%, #000000 100%); }
-        .client-gradient { background: linear-gradient(135deg, #3498db 0%, #000000 100%); }
-        
-        .switch-content { transition: all 0.5s ease-in-out; }
-        .hidden-content { display: none; opacity: 0; transform: translateY(20px); }
-        .visible-content { display: block; opacity: 1; transform: translateY(0); animation: fadeIn 0.8s forwards; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .fab-float {
-            position: fixed; bottom: 30px; right: 30px; z-index: 50;
-            animation: float 4s ease-in-out infinite;
-        }
+        body { font-family: 'Outfit', 'Segoe UI', sans-serif; background-color: #050505; overflow-x: hidden; color: #fff; }
+        .glass { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
+        .glass-high { background: rgba(30, 30, 30, 0.4); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.15); border-left: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .text-glow-barber { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+        .text-glow-client { text-shadow: 0 0 20px rgba(0, 210, 255, 0.5); }
+        .hidden-content { display: none; opacity: 0; transform: scale(0.95) translateY(20px); filter: blur(10px); }
+        .visible-content { display: block; opacity: 1; transform: scale(1) translateY(0); filter: blur(0); animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateY(30px); filter: blur(10px); } to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
+        .perspective-container { perspective: 1000px; }
+        .card-3d { transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform-style: preserve-3d; }
+        .card-3d:hover { transform: rotateY(5deg) rotateX(5deg) translateZ(20px); }
+        .fab-float { position: fixed; bottom: 30px; right: 30px; z-index: 100; animation: float 4s ease-in-out infinite; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        .bg-grid-pattern { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px); mask-image: linear-gradient(to bottom, black 40%, transparent 100%); }
     </style>
 </head>
-<body class="text-white">
+<body>
+    
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-20"></div>
+        <div id="blob-barber" class="absolute top-0 left-1/4 w-96 h-96 bg-barber rounded-full mix-blend-multiply filter blur-[120px] opacity-20 animate-blob"></div>
+        <div id="blob-client" class="absolute top-0 right-1/4 w-96 h-96 bg-client rounded-full mix-blend-multiply filter blur-[120px] opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-1/3 w-[500px] h-[500px] bg-purple-900 rounded-full mix-blend-multiply filter blur-[150px] opacity-20 animate-blob animation-delay-4000"></div>
+    </div>
 
-    <nav class="fixed w-full z-40 glass p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-scissors text-2xl text-barber animate-spin-slow"></i>
-                <h1 class="text-2xl font-bold tracking-wider">BARBER <span id="nav-suffix" class="text-barber">ECOSYSTEM</span></h1>
+    <nav class="fixed w-full z-50 glass-high p-4 border-b border-white/5 transition-all duration-300">
+        <div class="container mx-auto flex justify-between items-center relative">
+            <div class="flex items-center gap-3 group cursor-pointer">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-barber blur-lg opacity-40 group-hover:opacity-80 transition duration-500 rounded-full"></div>
+                    <i class="fa-solid fa-scissors text-2xl text-white relative z-10 transform group-hover:rotate-180 transition duration-700"></i>
+                </div>
+                <h1 class="text-2xl font-bold tracking-widest text-white">BARBER <span id="nav-suffix" class="text-barber text-glow-barber transition-all duration-500">ECOSYSTEM</span></h1>
             </div>
             <div>
-                <a href="https://wa.me/+5351881471" class="text-gray-300 hover:text-white transition">Soporte</a>
+                <a href="https://wa.me/+5351881471" class="px-5 py-2 rounded-full glass hover:bg-white/10 transition border border-white/10 hover:border-white/30 flex items-center gap-2 group">
+                    <i class="fa-brands fa-whatsapp text-green-400 group-hover:scale-110 transition"></i> Soporte
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="pt-28 pb-10 text-center container mx-auto px-4">
-        <h2 class="text-3xl md:text-5xl font-bold mb-8" data-aos="fade-down">¿Quién eres hoy?</h2>
+    <div class="relative z-10 pt-32 pb-12 text-center container mx-auto px-4">
+        <span class="inline-block py-1 px-3 rounded-full glass border border-white/10 text-xs font-bold tracking-widest text-gray-400 mb-4 animate-bounce">SELECCIONA TU PERFIL</span>
+        <h2 class="text-4xl md:text-6xl font-bold mb-10 text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 drop-shadow-sm" data-aos="fade-down">¿Cuál es tu misión hoy?</h2>
         
-        <div class="flex justify-center gap-6 mb-12" data-aos="zoom-in">
-            <button onclick="setMode('barber')" id="btn-barber" class="px-8 py-4 rounded-full text-xl font-bold border-2 border-barber bg-barber text-black shadow-[0_0_20px_rgba(46,204,113,0.5)] transition hover:scale-105">
-                <i class="fa-solid fa-user-tie mr-2"></i> SOY BARBERO
+        <div class="flex flex-col md:flex-row justify-center gap-8 mb-16 perspective-container" data-aos="zoom-in">
+            <button onclick="setMode('barber')" id="btn-barber" class="group relative px-10 py-5 rounded-2xl text-xl font-bold transition-all duration-500 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,255,136,0.2)] bg-black border border-barber/30 overflow-hidden">
+                <div class="absolute inset-0 bg-barber/10 group-hover:bg-barber/20 transition duration-500"></div>
+                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-barber/20 to-transparent"></div>
+                <div class="relative z-10 flex items-center justify-center gap-3 text-barber group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-user-tie text-2xl"></i> 
+                    <span>SOY BARBERO</span>
+                </div>
             </button>
-            <button onclick="setMode('client')" id="btn-client" class="px-8 py-4 rounded-full text-xl font-bold border-2 border-client text-client hover:bg-client hover:text-white transition hover:scale-105">
-                <i class="fa-solid fa-user mr-2"></i> SOY CLIENTE
+            
+            <button onclick="setMode('client')" id="btn-client" class="group relative px-10 py-5 rounded-2xl text-xl font-bold transition-all duration-500 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,210,255,0.2)] bg-black border border-client/30 overflow-hidden">
+                <div class="absolute inset-0 bg-client/10 group-hover:bg-client/20 transition duration-500"></div>
+                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-client/20 to-transparent"></div>
+                <div class="relative z-10 flex items-center justify-center gap-3 text-client group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-user text-2xl"></i> 
+                    <span>SOY CLIENTE</span>
+                </div>
             </button>
         </div>
     </div>
 
-    <div id="barber-section" class="visible-content container mx-auto px-4 pb-20">
+    <div id="barber-section" class="visible-content container mx-auto px-4 pb-20 relative z-20">
         <div class="flex flex-col md:flex-row items-center justify-between gap-10 mb-20">
             <div class="md:w-1/2" data-aos="fade-right">
-                <span class="text-barber font-bold tracking-widest text-sm">BARBER STUDIO APP</span>
-                <h1 class="text-5xl md:text-7xl font-bold mt-2 mb-6 leading-tight">Tu Negocio,<br>Nivel <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">PRO</span>.</h1>
-                <p class="text-gray-400 text-lg mb-8">Olvídate de la libreta. Gestiona tu agenda, controla tus finanzas diarias y fideliza clientes, incluso sin internet.</p>
+                <span class="inline-block py-1 px-3 rounded text-xs font-bold bg-barber/10 text-barber border border-barber/20 mb-4 tracking-widest">BARBER STUDIO APP</span>
+                <h1 class="text-5xl md:text-7xl font-bold mt-2 mb-6 leading-tight drop-shadow-2xl">Tu Negocio,<br>Nivel <span class="text-transparent bg-clip-text bg-gradient-to-r from-barber to-emerald-400 text-glow-barber">PRO</span>.</h1>
+                <p class="text-gray-400 text-lg mb-8 leading-relaxed">Olvídate de la libreta. Gestiona tu agenda, controla tus finanzas diarias y fideliza clientes con tecnología de punta.</p>
                 <div class="flex gap-4">
-                    <a href="#descargar-barbero" class="bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-gray-200 transition"><i class="fa-solid fa-download mr-2"></i> Descargar APK</a>
-                    <a href="#faq-barbero" class="border border-gray-600 px-6 py-3 rounded-lg hover:border-white transition">Ver Dudas</a>
+                    <a href="#descargar-barbero" class="group relative px-8 py-3 bg-barber text-dark font-bold rounded-lg overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(0,255,136,0.6)]">
+                        <div class="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        <span class="relative flex items-center gap-2"><i class="fa-solid fa-download"></i> Descargar APK</span>
+                    </a>
+                    <a href="#faq-barbero" class="px-8 py-3 border border-white/20 text-white rounded-lg hover:bg-white/5 transition flex items-center gap-2">Ver Dudas</a>
                 </div>
             </div>
             
-            <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0" data-aos="fade-left">
-                <div class="absolute inset-0 bg-barber blur-[100px] opacity-20 animate-pulse"></div>
+            <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0 perspective-container" data-aos="fade-left">
+                <div class="absolute inset-0 bg-barber blur-[90px] opacity-20 animate-pulse"></div>
                 <div class="relative w-full flex justify-center h-[500px]">
-                    <img src="Screenshot_20260218-090943_Barber Studio.jpg" class="absolute left-0 w-[55%] rounded-3xl border border-gray-800 shadow-[0_0_30px_rgba(46,204,113,0.3)] z-20 animate-float hover:scale-105 transition-transform duration-500 object-cover h-[450px]" alt="Agenda Barber Studio">
-                    <img src="Screenshot_20260218-090840_Barber Studio.jpg" class="absolute right-0 top-10 w-[55%] rounded-3xl border border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.8)] z-10 transform rotate-6 hover:rotate-0 hover:z-30 hover:scale-105 transition-all duration-500 object-cover h-[450px]" alt="Finanzas Barber Studio">
+                    <img src="Screenshot_20260218-090943_Barber Studio.jpg" class="card-3d absolute left-0 w-[55%] rounded-3xl border border-barber/30 shadow-[0_0_40px_rgba(0,255,136,0.15)] z-20 animate-float object-cover h-[450px]" alt="Agenda Barber Studio">
+                    <img src="Screenshot_20260218-090840_Barber Studio.jpg" class="card-3d absolute right-0 top-10 w-[55%] rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-10 animate-float-delayed object-cover h-[450px]" alt="Finanzas Barber Studio">
                 </div>
             </div>
         </div>
 
         <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl font-bold mb-4">Potencia Visual para tu Negocio</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Revisa tu progreso con gráficos detallados de tus últimos 7 días. Controla tu meta mensual de ingresos y visualiza cada turno de forma clara y moderna.</p>
+            <h2 class="text-3xl font-bold mb-4 text-white">Potencia Visual para tu Negocio</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Revisa tu progreso con gráficos detallados y controla tu meta mensual.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            <div class="glass p-8 rounded-2xl hover:border-barber transition duration-300 group hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center text-barber text-3xl mb-6 group-hover:animate-pulse-glow"><i class="fa-solid fa-calendar-check"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white">Agenda Blindada Offline</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Tu base de datos vive en tu teléfono. Si se cae ETECSA, tú sigues trabajando. Al volver la conexión, todo se sincroniza solo.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-calendar-check"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Agenda Blindada Offline</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Base de datos local en tu teléfono. Si se cae ETECSA, sigues trabajando. Sincronización automática al conectar.</p>
             </div>
-            <div class="glass p-8 rounded-2xl hover:border-barber transition duration-300 group hover:-translate-y-2" data-aos="fade-up" data-aos-delay="150">
-                <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center text-barber text-3xl mb-6 group-hover:animate-pulse-glow"><i class="fa-solid fa-sack-dollar"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white">Control Financiero</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Cierre de Caja automático a las 11:59 PM. Fija tu meta mensual (ej. $80,000) y mira la barra de progreso llenarse con cada corte.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="150">
+                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-sack-dollar"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Control Financiero</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Cierre de Caja automático. Fija tu meta mensual (ej. $80,000) y mira la barra de progreso llenarse.</p>
             </div>
-            <div class="glass p-8 rounded-2xl hover:border-barber transition duration-300 group hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center text-barber text-3xl mb-6 group-hover:animate-pulse-glow"><i class="fa-solid fa-fingerprint"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white">Seguridad de Hardware</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Tu cuenta se casa con tu teléfono. Nadie puede abrir tu agenda en otro dispositivo sin tu autorización. Protección total.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-fingerprint"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Seguridad Hardware</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Tu cuenta se casa con tu teléfono. Nadie puede abrir tu agenda en otro dispositivo sin tu permiso.</p>
             </div>
-            <div class="glass p-8 rounded-2xl hover:border-barber transition duration-300 group hover:-translate-y-2" data-aos="fade-up" data-aos-delay="250">
-                <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center text-barber text-3xl mb-6 group-hover:animate-pulse-glow"><i class="fa-solid fa-users-viewfinder"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white">Expediente de Clientes</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Guarda el historial de cada cliente: cuándo vino, cuánto gastó y qué corte se hizo. Fideliza como un profesional.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="250">
+                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-users-viewfinder"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Expediente Clientes</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Historial completo: fechas, gastos y cortes realizados. Fidelización profesional.</p>
             </div>
-            <div class="glass p-8 rounded-2xl hover:border-barber transition duration-300 group hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center text-barber text-3xl mb-6 group-hover:animate-pulse-glow"><i class="fa-solid fa-bell"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white">Alarmas Exactas</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Olvídate de mirar el reloj. La App te despierta con una notificación precisa antes de cada turno. Cero olvidos.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-bell"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Alarmas Exactas</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">La App te despierta con una notificación precisa antes de cada turno. Cero olvidos.</p>
             </div>
-            <div class="glass p-8 rounded-2xl hover:border-barber transition duration-300 group hover:-translate-y-2" data-aos="fade-up" data-aos-delay="350">
-                <div class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center text-barber text-3xl mb-6 group-hover:animate-pulse-glow"><i class="fa-solid fa-bolt"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white">Turno Rápido</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">¿Llegó alguien sin avisar? Agregalo en 2 segundos con el botón flotante. La agenda se actualiza al instante.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="350">
+                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-bolt"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Turno Rápido</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Agrega clientes sin cita en 2 segundos con el botón flotante. Actualización instantánea.</p>
             </div>
         </div>
 
         <div id="faq-barbero" class="max-w-3xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-10"><span class="text-barber">Dudas</span> del Barbero</h2>
+            <h2 class="text-3xl font-bold text-center mb-10 text-white">Dudas del <span class="text-barber text-glow-barber">Barbero</span></h2>
             
-            <div class="space-y-3">
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
+            <div class="space-y-4">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
                         1. ¿Funciona si se me va la conexión o los datos?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Absolutamente. Barber Studio usa una base de datos local (SQLite). Puedes agendar, cobrar y ver el historial sin internet. En cuanto te conectes, la App sube todo a la nube automáticamente.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Absolutamente. Barber Studio usa una base de datos local (SQLite). Puedes agendar, cobrar y ver el historial sin internet. En cuanto te conectes, la App sube todo a la nube automáticamente.</p>
                 </details>
 
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
                         2. ¿Qué es el ID de Seguridad por Hardware?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Es un sistema anti-robo. Tu cuenta se vincula al ID físico de tu teléfono. Si alguien roba tu contraseña e intenta entrar desde otro celular, el sistema lo bloquea. Solo tú puedes autorizar un cambio de dispositivo.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Es un sistema anti-robo. Tu cuenta se vincula al ID físico de tu teléfono. Si alguien roba tu contraseña e intenta entrar desde otro celular, el sistema lo bloquea. Solo tú puedes autorizar un cambio de dispositivo.</p>
                 </details>
 
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
                         3. ¿Cómo funciona el Cierre Diario?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">La App suma todos los cortes completados y los ingresos extra del día. A las 11:59 PM genera un reporte automático que se guarda en tu historial financiero. No tienes que sacar cuentas a mano.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">La App suma todos los cortes completados y los ingresos extra del día. A las 11:59 PM genera un reporte automático que se guarda en tu historial financiero. No tienes que sacar cuentas a mano.</p>
                 </details>
 
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
                         4. ¿Puedo agendar a alguien que no tiene la App?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Sí, usas el botón Turno Rápido. Solo pones nombre, hora y precio. Se guarda al instante en tu agenda como un turno manual.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Sí, usas el botón Turno Rápido. Solo pones nombre, hora y precio. Se guarda al instante en tu agenda como un turno manual.</p>
                 </details>
 
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
                         5. ¿Las notificaciones suenan sin saldo?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Sí. Usamos el sistema de Alarmas Exactas de Android. Tu teléfono te avisará del turno aunque no tengas megas ni Wi-Fi, porque la alarma está guardada en el dispositivo.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Sí. Usamos el sistema de Alarmas Exactas de Android. Tu teléfono te avisará del turno aunque no tengas megas ni Wi-Fi, porque la alarma está guardada en el dispositivo.</p>
                 </details>
 
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
                         6. ¿Qué pasa si cambio de teléfono?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Debes contactar a Soporte desde la App vieja o por WhatsApp para liberar tu ID. Una vez liberado, inicias sesión en el teléfono nuevo y se descargan todos tus datos desde la nube.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Debes contactar a Soporte desde la App vieja o por WhatsApp para liberar tu ID. Una vez liberado, inicias sesión en el teléfono nuevo y se descargan todos tus datos desde la nube.</p>
                 </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
-                        7. ¿Puedo personalizar mi perfil?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
+                        7. ¿Tiene costo la aplicación?
+                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Totalmente. Puedes subir tu foto de perfil, una foto de portada para tu fondo y establecer tu nombre comercial. Todo eso lo verán tus clientes en su App.</p>
-                </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
-                        8. ¿Cómo veo la Meta Mensual?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">En la pantalla principal hay una barra de progreso. Tú defines cuánto quieres ganar y la barra se llena de verde a medida que cobras cortes durante el mes.</p>
-                </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
-                        9. ¿Se borran los datos si desinstalo la App?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">No. Tu base de datos tiene una copia espejo en nuestros servidores seguros. Al reinstalar, todo vuelve a aparecer.</p>
-                </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-barber transition">
-                        10. ¿Tiene costo la aplicación?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber">Barber Studio es una herramienta profesional premium. Contacta a soporte para conocer los planes de suscripción activos en Cuba.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Barber Studio es una herramienta profesional premium. Contacta a soporte para conocer los planes de suscripción activos en Cuba.</p>
                 </details>
             </div>
         </div>
     </div>
 
-    <div id="client-section" class="hidden-content container mx-auto px-4 pb-20 hidden">
+
+    <div id="client-section" class="hidden-content container mx-auto px-4 pb-20 hidden relative z-20">
         <div class="flex flex-col md:flex-row items-center justify-between gap-10 mb-20">
             <div class="md:w-1/2" data-aos="fade-right">
-                <span class="text-client font-bold tracking-widest text-sm">BARBER CONNECT APP</span>
-                <h1 class="text-5xl md:text-7xl font-bold mt-2 mb-6 leading-tight">Tu Estilo,<br>Sin <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">ESPERAS</span>.</h1>
-                <p class="text-gray-400 text-lg mb-8">Encuentra los mejores barberos cerca de ti, mira sus horarios libres y reserva en segundos. Cero llamadas, cero estrés.</p>
+                <span class="inline-block py-1 px-3 rounded text-xs font-bold bg-client/10 text-client border border-client/20 mb-4 tracking-widest">BARBER CONNECT APP</span>
+                <h1 class="text-5xl md:text-7xl font-bold mt-2 mb-6 leading-tight drop-shadow-2xl">Tu Estilo,<br>Sin <span class="text-transparent bg-clip-text bg-gradient-to-r from-client to-blue-400 text-glow-client">ESPERAS</span>.</h1>
+                <p class="text-gray-400 text-lg mb-8 leading-relaxed">Encuentra los mejores barberos cerca de ti, mira sus horarios libres y reserva en segundos. Cero llamadas, cero estrés.</p>
                 <div class="flex gap-4">
-                    <a href="#descargar-cliente" class="bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-gray-200 transition"><i class="fa-solid fa-download mr-2"></i> Descargar APK</a>
-                    <a href="#faq-cliente" class="border border-gray-600 px-6 py-3 rounded-lg hover:border-white transition">Cómo Funciona</a>
+                    <a href="#descargar-cliente" class="group relative px-8 py-3 bg-client text-dark font-bold rounded-lg overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(0,210,255,0.6)]">
+                        <div class="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        <span class="relative flex items-center gap-2"><i class="fa-solid fa-download"></i> Descargar APK</span>
+                    </a>
+                    <a href="#faq-cliente" class="px-8 py-3 border border-white/20 text-white rounded-lg hover:bg-white/5 transition flex items-center gap-2">Cómo Funciona</a>
                 </div>
             </div>
             
-            <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0" data-aos="fade-left">
-                <div class="absolute inset-0 bg-client blur-[100px] opacity-30 animate-pulse"></div>
+            <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0 perspective-container" data-aos="fade-left">
+                <div class="absolute inset-0 bg-client blur-[90px] opacity-20 animate-pulse"></div>
                 <div class="relative w-full flex justify-center h-[500px]">
-                    <img src="Screenshot_20260218-091057.jpg" class="absolute left-0 w-[55%] rounded-3xl border border-gray-800 shadow-[0_0_40px_rgba(52,152,219,0.3)] z-20 animate-float hover:scale-105 transition-transform duration-500 object-cover h-[450px]" alt="Mapa Barber Connect">
-                    <img src="Screenshot_20260218_095833.jpg" class="absolute right-0 top-12 w-[55%] rounded-3xl border border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.8)] z-10 transform -rotate-6 hover:rotate-0 hover:z-30 hover:scale-105 transition-all duration-500 object-cover h-[400px]" alt="Reserva Enviada Barber Connect">
+                    <img src="Screenshot_20260218-091057.jpg" class="card-3d absolute left-0 w-[55%] rounded-3xl border border-client/30 shadow-[0_0_40px_rgba(0,210,255,0.15)] z-20 animate-float object-cover h-[450px]" alt="Mapa Barber Connect">
+                    <img src="Screenshot_20260218_095833.jpg" class="card-3d absolute right-0 top-12 w-[55%] rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-10 transform -rotate-6 animate-float-delayed object-cover h-[400px]" alt="Reserva Enviada Barber Connect">
                 </div>
             </div>
         </div>
 
         <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl font-bold mb-4">La Ciudad en tus Manos</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Explora el mapa interactivo para descubrir talentos a tu alrededor. Visualiza la distancia en kilómetros, envía tu solicitud de reserva en dos toques y recibe la confirmación al instante.</p>
+            <h2 class="text-3xl font-bold mb-4 text-white">La Ciudad en tus Manos</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Explora el mapa interactivo para descubrir talentos a tu alrededor.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            <div class="glass p-8 rounded-2xl hover:border-client transition duration-300">
-                <div class="w-14 h-14 bg-blue-900/50 rounded-full flex items-center justify-center text-client text-2xl mb-4"><i class="fa-solid fa-map-location-dot"></i></div>
-                <h3 class="text-xl font-bold mb-2">Mapa en Vivo</h3>
-                <p class="text-gray-400">Usa tu GPS para ver barberías cercanas. Toca una y la app te muestra fotos, reseñas y su ubicación exacta.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-client/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden">
+                <div class="absolute inset-0 bg-client/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-client/10 rounded-xl flex items-center justify-center text-client text-2xl mb-6 border border-client/20 group-hover:shadow-[0_0_20px_rgba(0,210,255,0.4)] transition duration-300"><i class="fa-solid fa-map-location-dot"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-client transition">Mapa en Vivo</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Usa tu GPS para ver barberías cercanas. Toca una y la app te muestra fotos, reseñas y su ubicación.</p>
             </div>
-            <div class="glass p-8 rounded-2xl hover:border-client transition duration-300">
-                <div class="w-14 h-14 bg-blue-900/50 rounded-full flex items-center justify-center text-client text-2xl mb-4"><i class="fa-solid fa-clock"></i></div>
-                <h3 class="text-xl font-bold mb-2">Reserva Fácil</h3>
-                <p class="text-gray-400">Elige día y hora. Envía la solicitud y recibe la confirmación al instante en tu móvil. Tu barbero sabrá que vas en camino.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-client/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden">
+                <div class="absolute inset-0 bg-client/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-client/10 rounded-xl flex items-center justify-center text-client text-2xl mb-6 border border-client/20 group-hover:shadow-[0_0_20px_rgba(0,210,255,0.4)] transition duration-300"><i class="fa-solid fa-clock"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-client transition">Reserva Fácil</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Elige día y hora. Envía la solicitud y recibe la confirmación al instante. Tu barbero sabrá que vas.</p>
             </div>
-            <div class="glass p-8 rounded-2xl hover:border-client transition duration-300">
-                <div class="w-14 h-14 bg-blue-900/50 rounded-full flex items-center justify-center text-client text-2xl mb-4"><i class="fa-solid fa-star"></i></div>
-                <h3 class="text-xl font-bold mb-2">Califica</h3>
-                <p class="text-gray-400">Después del corte, deja tu reseña. Ayuda a otros a encontrar a los mejores barberos de la zona para fortalecer la comunidad.</p>
+            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-client/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden">
+                <div class="absolute inset-0 bg-client/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div class="w-14 h-14 bg-client/10 rounded-xl flex items-center justify-center text-client text-2xl mb-6 border border-client/20 group-hover:shadow-[0_0_20px_rgba(0,210,255,0.4)] transition duration-300"><i class="fa-solid fa-star"></i></div>
+                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-client transition">Califica</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Después del corte, deja tu reseña. Ayuda a otros a encontrar a los mejores barberos.</p>
             </div>
         </div>
 
         <div id="faq-cliente" class="max-w-3xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-10"><span class="text-client">Dudas</span> del Cliente</h2>
+            <h2 class="text-3xl font-bold text-center mb-10 text-white">Dudas del <span class="text-client text-glow-client">Cliente</span></h2>
             
-            <div class="space-y-3">
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
+            <div class="space-y-4">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
                         1. ¿Cómo sé si el barbero aceptó mi cita?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Recibirás una notificación inmediata en tu celular. Además, en la sección Mis Reservas, el turno cambiará de color naranja a verde.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Recibirás una notificación inmediata en tu celular. Además, en la sección Mis Reservas, el turno cambiará de color naranja a verde.</p>
                 </details>
 
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
                         2. ¿Necesito tener el GPS activado?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Solo si quieres usar el Mapa para encontrar barberías cercanas a ti. Si ya conoces al barbero, puedes buscarlo por su nombre o número sin activar el GPS.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Solo si quieres usar el Mapa para encontrar barberías cercanas a ti. Si ya conoces al barbero, puedes buscarlo por su nombre o número sin activar el GPS.</p>
                 </details>
 
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
                         3. ¿Puedo cancelar un turno si no puedo ir?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Sí. Tienes un botón de Cancelar en tus reservas. Al hacerlo, le notificamos al barbero al instante para que no pierda su tiempo.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Sí. Tienes un botón de Cancelar en tus reservas. Al hacerlo, le notificamos al barbero al instante para que no pierda su tiempo.</p>
                 </details>
 
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
                         4. ¿Me avisan si el barbero cancela?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Sí. Si el barbero tiene una emergencia y cancela tu cita, te llegará una alerta roja inmediatamente para que lo sepas y puedas reagendar.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Sí. Si el barbero tiene una emergencia y cancela tu cita, te llegará una alerta roja inmediatamente para que lo sepas y puedas reagendar.</p>
                 </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
-                        5. ¿La aplicación gasta muchos datos?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                
+                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
+                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
+                        5. ¿La aplicación tiene costo para mí?
+                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
                     </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Muy pocos. Barber Connect está optimizada para Cuba. Solo consume datos al buscar o reservar. El resto del tiempo no gasta nada.</p>
-                </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
-                        6. ¿Es necesario registrarse?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Sí, necesitas poner tu número de teléfono y una contraseña. Esto es para que los barberos sepan quién eres y evitar turnos falsos.</p>
-                </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
-                        7. ¿Puedo calificar al barbero?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">¡Claro! Después de tu corte, puedes dejarle de 1 a 5 estrellas y un comentario. Esto ayuda a otros usuarios a elegir mejor.</p>
-                </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
-                        8. ¿La aplicación tiene costo para mí?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">No. Barber Connect es 100% gratuita para los clientes. Descargas, reservas y listo.</p>
-                </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
-                        9. ¿Cómo llego a una barbería que no conozco?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">En el perfil del barbero, toca el ícono del Mapa. La App te trazará la ruta exacta desde donde estás hasta la puerta del local.</p>
-                </details>
-
-                <details class="glass p-4 rounded-xl cursor-pointer group">
-                    <summary class="font-semibold list-none flex justify-between items-center hover:text-client transition">
-                        10. ¿Puedo ver mis cortes anteriores?
-                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client">Sí, tienes un historial completo de todas tus visitas, fechas y con qué barberos te atendiste.</p>
+                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">No. Barber Connect es 100% gratuita para los clientes. Descargas, reservas y listo.</p>
                 </details>
             </div>
         </div>
     </div>
 
-    <a href="#" id="floating-btn" class="fab-float bg-barber text-black w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(46,204,113,0.6)] hover:scale-110 transition duration-300">
-        <i class="fa-solid fa-circle-arrow-down"></i>
+
+    <a href="#" id="floating-btn" class="fab-float bg-barber text-dark w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(0,255,136,0.6)] hover:scale-110 transition duration-300 border border-white/20">
+        <i class="fa-solid fa-cloud-arrow-down"></i>
     </a>
 
-    <footer class="text-center py-10 text-gray-500 text-sm mt-10 border-t border-gray-800">
-        <div class="mb-6">
-            <a href="https://www.facebook.com/share/1874X9LGAy/" target="_blank" class="text-3xl text-blue-600 hover:text-white transition"><i class="fa-brands fa-facebook"></i></a>
+    <footer class="text-center py-10 text-gray-500 text-sm mt-10 border-t border-white/5 relative z-10">
+        <div class="mb-6 flex justify-center gap-4">
+            <a href="https://www.facebook.com/share/1874X9LGAy/" target="_blank" class="w-10 h-10 rounded-full glass flex items-center justify-center text-xl text-blue-500 hover:text-white hover:bg-blue-600 transition duration-300"><i class="fa-brands fa-facebook-f"></i></a>
         </div>
-        <p>© 2026 Barber Ecosystem. Desarrollado con <i class="fa-solid fa-heart text-red-500"></i> en Cuba.</p>
+        <p>© 2026 Barber Ecosystem. <span class="opacity-50">Desarrollado con <i class="fa-solid fa-bolt text-yellow-400"></i> en Cuba.</span></p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -382,57 +377,81 @@
         const sectionClient = document.getElementById('client-section');
         const floatingBtn = document.getElementById('floating-btn');
         const navSuffix = document.getElementById('nav-suffix');
+        const blobBarber = document.getElementById('blob-barber');
+        const blobClient = document.getElementById('blob-client');
 
         function setMode(mode) {
             if (mode === 'barber') {
-                btnBarber.classList.add('bg-barber', 'text-black', 'shadow-[0_0_20px_rgba(46,204,113,0.5)]');
-                btnBarber.classList.remove('text-barber', 'hover:bg-barber', 'hover:text-black');
+                // Estilos Botones
+                btnBarber.classList.add('shadow-[0_20px_40px_rgba(0,255,136,0.2)]', 'border-barber');
+                btnBarber.classList.remove('border-barber/30');
+                btnBarber.querySelector('.absolute.inset-0.bg-barber\\/10').classList.add('bg-barber/20');
                 
-                btnClient.classList.remove('bg-client', 'text-white', 'shadow-[0_0_20px_rgba(52,152,219,0.5)]');
-                btnClient.classList.add('text-client', 'hover:bg-client', 'hover:text-white');
+                btnClient.classList.remove('shadow-[0_20px_40px_rgba(0,210,255,0.2)]', 'border-client');
+                btnClient.classList.add('border-client/30');
+                btnClient.querySelector('.absolute.inset-0.bg-client\\/10').classList.remove('bg-client/20');
 
+                // Visibilidad Secciones
                 sectionClient.classList.add('hidden', 'hidden-content');
                 sectionClient.classList.remove('visible-content');
                 
                 sectionBarber.classList.remove('hidden', 'hidden-content');
                 sectionBarber.classList.add('visible-content');
 
-                floatingBtn.classList.remove('bg-client', 'shadow-[0_0_30px_rgba(52,152,219,0.6)]');
-                floatingBtn.classList.add('bg-barber', 'text-black', 'shadow-[0_0_30px_rgba(46,204,113,0.6)]');
+                // Botón Flotante
+                floatingBtn.classList.remove('bg-client', 'shadow-[0_0_30px_rgba(0,210,255,0.6)]');
+                floatingBtn.classList.add('bg-barber', 'text-dark', 'shadow-[0_0_30px_rgba(0,255,136,0.6)]');
                 floatingBtn.href = linkBarber;
 
-                navSuffix.innerText = "STUDIO";
-                navSuffix.classList.remove('text-client');
-                navSuffix.classList.add('text-barber');
+                // Texto Nav y Efectos Fondo
+                navSuffix.innerText = "ECOSYSTEM"; 
+                navSuffix.classList.remove('text-client', 'text-glow-client');
+                navSuffix.classList.add('text-barber', 'text-glow-barber');
+                
+                blobBarber.classList.remove('opacity-0');
+                blobClient.classList.add('opacity-0');
 
             } else {
-                btnClient.classList.add('bg-client', 'text-white', 'shadow-[0_0_20px_rgba(52,152,219,0.5)]');
-                btnClient.classList.remove('text-client', 'hover:bg-client', 'hover:text-white');
+                // Estilos Botones
+                btnClient.classList.add('shadow-[0_20px_40px_rgba(0,210,255,0.2)]', 'border-client');
+                btnClient.classList.remove('border-client/30');
+                btnClient.querySelector('.absolute.inset-0.bg-client\\/10').classList.add('bg-client/20');
                 
-                btnBarber.classList.remove('bg-barber', 'text-black', 'shadow-[0_0_20px_rgba(46,204,113,0.5)]');
-                btnBarber.classList.add('text-barber', 'hover:bg-barber', 'hover:text-black');
+                btnBarber.classList.remove('shadow-[0_20px_40px_rgba(0,255,136,0.2)]', 'border-barber');
+                btnBarber.classList.add('border-barber/30');
+                btnBarber.querySelector('.absolute.inset-0.bg-barber\\/10').classList.remove('bg-barber/20');
 
+                // Visibilidad Secciones
                 sectionBarber.classList.add('hidden', 'hidden-content');
                 sectionBarber.classList.remove('visible-content');
                 
                 sectionClient.classList.remove('hidden', 'hidden-content');
                 sectionClient.classList.add('visible-content');
 
-                floatingBtn.classList.remove('bg-barber', 'text-black', 'shadow-[0_0_30px_rgba(46,204,113,0.6)]');
-                floatingBtn.classList.add('bg-client', 'text-white', 'shadow-[0_0_30px_rgba(52,152,219,0.6)]');
+                // Botón Flotante
+                floatingBtn.classList.remove('bg-barber', 'text-dark', 'shadow-[0_0_30px_rgba(0,255,136,0.6)]');
+                floatingBtn.classList.add('bg-client', 'text-dark', 'shadow-[0_0_30px_rgba(0,210,255,0.6)]');
                 floatingBtn.href = linkClient;
 
+                // Texto Nav y Efectos Fondo
                 navSuffix.innerText = "CONNECT";
-                navSuffix.classList.remove('text-barber');
-                navSuffix.classList.add('text-client');
+                navSuffix.classList.remove('text-barber', 'text-glow-barber');
+                navSuffix.classList.add('text-client', 'text-glow-client');
+
+                blobBarber.classList.add('opacity-0');
+                blobClient.classList.remove('opacity-0');
             }
         }
 
+        // Inicializar links
         floatingBtn.href = linkBarber;
-
         document.querySelectorAll('a[href="#descargar-barbero"]').forEach(el => el.href = linkBarber);
         document.querySelectorAll('a[href="#descargar-cliente"]').forEach(el => el.href = linkClient);
+        
+        // Efecto inicial
+        document.getElementById('blob-client').classList.add('opacity-0');
+        document.getElementById('blob-barber').classList.add('transition', 'duration-1000');
+        document.getElementById('blob-client').classList.add('transition', 'duration-1000');
     </script>
 </body>
 </html>
-
