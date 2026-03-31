@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -111,7 +111,7 @@
     <div class="relative z-10 pt-32 pb-12 text-center container mx-auto px-4">
         <span class="inline-block py-1 px-3 rounded-full glass border border-white/10 text-xs font-bold tracking-widest text-gray-400 mb-4 animate-bounce">SELECCIONA TU PERFIL</span>
         <h2 class="text-4xl md:text-6xl font-bold mb-10 text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 drop-shadow-sm" data-aos="fade-down">¿Cuál es tu misión hoy?</h2>
-        
+
         <div class="flex flex-col md:flex-row justify-center gap-8 mb-16 perspective-container" data-aos="zoom-in">
             <button onclick="setMode('barber')" id="btn-barber" class="group relative px-10 py-5 rounded-2xl text-xl font-bold transition-all duration-500 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,255,136,0.2)] bg-black border border-barber/30 overflow-hidden">
                 <div class="absolute inset-0 bg-barber/10 group-hover:bg-barber/20 transition duration-500"></div>
@@ -121,7 +121,7 @@
                     <span>SOY BARBERO</span>
                 </div>
             </button>
-            
+
             <button onclick="setMode('client')" id="btn-client" class="group relative px-10 py-5 rounded-2xl text-xl font-bold transition-all duration-500 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,210,255,0.2)] bg-black border border-client/30 overflow-hidden">
                 <div class="absolute inset-0 bg-client/10 group-hover:bg-client/20 transition duration-500"></div>
                 <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-client/20 to-transparent"></div>
@@ -153,7 +153,7 @@
                     <a href="#faq-barbero" class="px-8 py-3 border border-white/20 text-white rounded-lg hover:bg-white/5 transition flex items-center gap-2">Ver Dudas</a>
                 </div>
             </div>
-            
+
             <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0 perspective-container" data-aos="fade-left">
                 <div class="absolute inset-0 bg-barber blur-[90px] opacity-20 animate-pulse"></div>
                 <div class="relative w-full flex justify-center h-[500px]">
@@ -243,7 +243,7 @@
 
         <div id="faq-barbero" class="max-w-3xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-10 text-white">Dudas del <span class="text-barber text-glow-barber">Barbero</span></h2>
-            
+
             <div class="space-y-4">
                 <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
                     <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
@@ -292,7 +292,7 @@
                     </summary>
                     <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Debes contactar a Soporte desde la App vieja o por WhatsApp para liberar tu ID. Una vez liberado, inicias sesión en el teléfono nuevo y se descargan todos tus datos desde la nube.</p>
                 </details>
-                
+
                 <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
                     <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
                         7. ¿Tiene costo la aplicación?
@@ -345,7 +345,7 @@
                     </a>
                 </div>
             </div>
-            
+
             <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0 perspective-container" data-aos="fade-left">
                 <div class="absolute inset-0 bg-client blur-[90px] opacity-20 animate-pulse"></div>
                 <div class="relative w-full flex justify-center h-[500px]">
@@ -383,7 +383,7 @@
 
         <div id="faq-cliente" class="max-w-3xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-10 text-white">Dudas del <span class="text-client text-glow-client">Cliente</span></h2>
-            
+
             <div class="space-y-4">
                 <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
                     <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
@@ -416,7 +416,7 @@
                     </summary>
                     <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Sí. Si el barbero tiene una emergencia y cancela tu cita, te llegará una alerta roja inmediatamente para que lo sepas y puedas reagendar.</p>
                 </details>
-                
+
                 <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
                     <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
                         5. ¿La aplicación tiene costo para mí?
@@ -427,7 +427,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="fixed bottom-[135px] right-[25px] z-[100] flex flex-col items-end group">
         <div class="bg-dark/90 backdrop-blur-xl text-client text-[10px] font-black py-1.5 px-4 rounded-xl mb-3 border border-client shadow-[0_0_25px_rgba(0,210,255,0.5)] whitespace-nowrap border-glow-client">
             <span class="animate-flash-hide">✨ RESERVAR TURNO WEB</span>
@@ -496,14 +496,14 @@
                 btnBarber.classList.add('shadow-[0_20px_40px_rgba(0,255,136,0.2)]', 'border-barber');
                 btnBarber.classList.remove('border-barber/30');
                 btnBarber.querySelector('.absolute.inset-0.bg-barber\\/10').classList.add('bg-barber/20');
-                
+
                 btnClient.classList.remove('shadow-[0_20px_40px_rgba(0,210,255,0.2)]', 'border-client');
                 btnClient.classList.add('border-client/30');
                 btnClient.querySelector('.absolute.inset-0.bg-client\\/10').classList.remove('bg-client/20');
 
                 sectionClient.classList.add('hidden', 'hidden-content');
                 sectionClient.classList.remove('visible-content');
-                
+
                 sectionBarber.classList.remove('hidden', 'hidden-content');
                 sectionBarber.classList.add('visible-content');
 
@@ -514,7 +514,7 @@
                 navSuffix.innerText = "ECOSYSTEM"; 
                 navSuffix.classList.remove('text-client', 'text-glow-client');
                 navSuffix.classList.add('text-barber', 'text-glow-barber');
-                
+
                 blobBarber.classList.remove('opacity-0');
                 blobClient.classList.add('opacity-0');
 
@@ -522,14 +522,14 @@
                 btnClient.classList.add('shadow-[0_20px_40px_rgba(0,210,255,0.2)]', 'border-client');
                 btnClient.classList.remove('border-client/30');
                 btnClient.querySelector('.absolute.inset-0.bg-client\\/10').classList.add('bg-client/20');
-                
+
                 btnBarber.classList.remove('shadow-[0_20px_40px_rgba(0,255,136,0.2)]', 'border-barber');
                 btnBarber.classList.add('border-barber/30');
                 btnBarber.querySelector('.absolute.inset-0.bg-barber\\/10').classList.remove('bg-barber/20');
 
                 sectionBarber.classList.add('hidden', 'hidden-content');
                 sectionBarber.classList.remove('visible-content');
-                
+
                 sectionClient.classList.remove('hidden', 'hidden-content');
                 sectionClient.classList.add('visible-content');
 
