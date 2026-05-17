@@ -1,568 +1,2491 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barber Studio & Connect | El Ecosistema de la Barbería</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barber Ecosystem — Studio & Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --g: #00ff88;
+  --gd: #00cc6a;
+  --b: #00d2ff;
+  --bd: #0099cc;
+  --dark: #050507;
+  --card: #0d0d10;
+  --card2: #141418;
+  --border: rgba(255,255,255,0.06);
+  --text: #e8e8f0;
+  --muted: #6b6b80;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--dark);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.6;
+}
+::selection{background:var(--g);color:#000}
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        barber: '#00ff88',
-                        barberdark: '#00cc6a',
-                        client: '#00d2ff',
-                        clientdark: '#00a3cc',
-                        dark: '#0a0a0a',
-                        card: '#121212'
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'float-delayed': 'float 7s ease-in-out 1s infinite',
-                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'blob': 'blob 15s infinite',
-                        'tilt': 'tilt 10s infinite linear'
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-                            '50%': { transform: 'translateY(-20px) rotate(2deg)' },
-                        },
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' }
-                        },
-                        tilt: {
-                            '0%, 50%, 100%': { transform: 'rotate(0deg)' },
-                            '25%': { transform: 'rotate(1deg)' },
-                            '75%': { transform: 'rotate(-1deg)' }
-                        },
-                        'pulse-glow': {
-                            '0%, 100%': { opacity: 1, filter: 'drop-shadow(0 0 10px rgba(0,255,136,0.5))' },
-                            '50%': { opacity: .7, filter: 'drop-shadow(0 0 25px rgba(0,255,136,0.2))' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { font-family: 'Outfit', 'Segoe UI', sans-serif; background-color: #050505; overflow-x: hidden; color: #fff; }
-        .glass { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
-        .glass-high { background: rgba(30, 30, 30, 0.4); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.15); border-left: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
-        .text-glow-barber { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
-        .text-glow-client { text-shadow: 0 0 20px rgba(0, 210, 255, 0.5); }
-        .hidden-content { display: none; opacity: 0; transform: scale(0.95) translateY(20px); filter: blur(10px); }
-        .visible-content { display: block; opacity: 1; transform: scale(1) translateY(0); filter: blur(0); animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateY(30px); filter: blur(10px); } to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
-        .perspective-container { perspective: 1000px; }
-        .card-3d { transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform-style: preserve-3d; }
-        .card-3d:hover { transform: rotateY(5deg) rotateX(5deg) translateZ(20px); }
-        .fab-float { position: fixed; bottom: 30px; right: 30px; z-index: 100; animation: float 4s ease-in-out infinite; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-        .bg-grid-pattern { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px); mask-image: linear-gradient(to bottom, black 40%, transparent 100%); }
-        @keyframes flashHide { 0%, 49% { opacity: 0; } 50%, 100% { opacity: 1; } }
-        .animate-flash-hide { animation: flashHide 1s steps(1) infinite; }
-        @keyframes pulse-glow-blue { 0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0,210,255,0.4); } 50% { transform: scale(1.05); box-shadow: 0 0 45px rgba(0,210,255,0.8); } }
-        .animate-glow-blue { animation: pulse-glow-blue 2s ease-in-out infinite; }
-    </style>
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:var(--g);border-radius:2px}
+
+/* NOISE OVERLAY */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+  opacity:.4;
+}
+
+/* AMBIENT BLOBS */
+.blob-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.blob{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(120px);
+  opacity:.12;
+  animation:blobFloat 18s ease-in-out infinite;
+}
+.blob-g{width:600px;height:600px;background:var(--g);top:-100px;left:-150px;animation-delay:0s}
+.blob-b{width:500px;height:500px;background:var(--b);top:30%;right:-100px;animation-delay:-6s}
+.blob-p{width:400px;height:400px;background:#8855ff;bottom:-100px;left:30%;animation-delay:-12s}
+@keyframes blobFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(40px,-60px) scale(1.08)}
+  66%{transform:translate(-30px,40px) scale(.94)}
+}
+
+/* PRELOADER */
+#preloader{
+  position:fixed;inset:0;
+  background:var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  z-index:9999;
+  transition:opacity .6s ease,visibility .6s ease;
+}
+#preloader.done{opacity:0;visibility:hidden}
+.preloader-inner{text-align:center}
+.preloader-icon{
+  font-size:3rem;
+  color:var(--g);
+  animation:spin 1.5s ease-in-out infinite;
+  display:block;
+  filter:drop-shadow(0 0 30px var(--g));
+  margin-bottom:1rem;
+}
+@keyframes spin{0%,100%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.15)}}
+.preloader-text{
+  font-family:'Syne',sans-serif;
+  font-size:.75rem;
+  letter-spacing:.3em;
+  color:var(--muted);
+  animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  padding:1rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  background:rgba(5,5,7,.7);
+  border-bottom:1px solid var(--border);
+  transition:all .3s;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:.75rem;
+  text-decoration:none;
+}
+.nav-logo i{
+  color:var(--g);
+  font-size:1.4rem;
+  filter:drop-shadow(0 0 10px var(--g));
+}
+.nav-logo span{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:1.1rem;
+  color:#fff;
+  letter-spacing:.05em;
+}
+.nav-logo span em{color:var(--g);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.nav-btn{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.5rem 1.1rem;
+  border-radius:8px;
+  font-size:.8rem;
+  font-weight:600;
+  text-decoration:none;
+  transition:all .2s;
+  border:1px solid var(--border);
+  color:#fff;
+  background:rgba(255,255,255,.04);
+}
+.nav-btn:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.15)}
+.nav-btn.g{border-color:rgba(0,255,136,.3);color:var(--g)}
+.nav-btn.g:hover{background:rgba(0,255,136,.1);box-shadow:0 0 20px rgba(0,255,136,.15)}
+
+/* HERO */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:6rem 1.5rem 3rem;
+  text-align:center;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.35rem .9rem;
+  border-radius:100px;
+  border:1px solid rgba(0,255,136,.25);
+  background:rgba(0,255,136,.06);
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.15em;
+  color:var(--g);
+  margin-bottom:2rem;
+  animation:fadeUp .8s ease both;
+}
+.hero-badge i{font-size:.65rem}
+.hero-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.8rem,8vw,6rem);
+  font-weight:800;
+  line-height:1.05;
+  color:#fff;
+  animation:fadeUp .8s .1s ease both;
+  max-width:900px;
+}
+.hero-title .g{
+  color:var(--g);
+  text-shadow:0 0 40px rgba(0,255,136,.4);
+}
+.hero-title .b{
+  color:var(--b);
+  text-shadow:0 0 40px rgba(0,210,255,.4);
+}
+.hero-sub{
+  margin-top:1.25rem;
+  font-size:clamp(1rem,2vw,1.2rem);
+  color:var(--muted);
+  max-width:580px;
+  animation:fadeUp .8s .2s ease both;
+  font-weight:300;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* MODE SELECTOR */
+.mode-selector{
+  display:flex;gap:1rem;
+  margin-top:2.5rem;
+  flex-wrap:wrap;
+  justify-content:center;
+  animation:fadeUp .8s .3s ease both;
+}
+.mode-btn{
+  position:relative;
+  padding:1rem 2rem;
+  border-radius:14px;
+  font-family:'Syne',sans-serif;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  display:flex;align-items:center;gap:.6rem;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  overflow:hidden;
+}
+.mode-btn::before{
+  content:'';
+  position:absolute;inset:0;
+  opacity:0;
+  transition:opacity .3s;
+}
+.mode-btn:hover{transform:translateY(-3px)}
+.mode-btn.barber{
+  background:rgba(0,255,136,.08);
+  border:1.5px solid rgba(0,255,136,.4);
+  color:var(--g);
+}
+.mode-btn.barber:hover,.mode-btn.barber.active{
+  background:rgba(0,255,136,.15);
+  box-shadow:0 8px 30px rgba(0,255,136,.2),0 0 0 1px rgba(0,255,136,.4);
+}
+.mode-btn.client{
+  background:rgba(0,210,255,.08);
+  border:1.5px solid rgba(0,210,255,.4);
+  color:var(--b);
+}
+.mode-btn.client:hover,.mode-btn.client.active{
+  background:rgba(0,210,255,.15);
+  box-shadow:0 8px 30px rgba(0,210,255,.2),0 0 0 1px rgba(0,210,255,.4);
+}
+
+/* SCROLL INDICATOR */
+.scroll-hint{
+  margin-top:3rem;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  opacity:.4;
+  animation:fadeUp .8s .6s ease both;
+}
+.scroll-hint span{font-size:.65rem;letter-spacing:.2em;color:var(--muted)}
+.scroll-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,var(--g),transparent);
+  animation:scrollLine 1.5s ease-in-out infinite;
+}
+@keyframes scrollLine{
+  0%{transform:scaleY(0);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+  51%{transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+
+/* SECTIONS */
+.section{
+  position:relative;z-index:1;
+  padding:5rem 1.5rem;
+  max-width:1200px;
+  margin:0 auto;
+}
+.section-hidden{display:none}
+
+.section-label{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.65rem;font-weight:700;letter-spacing:.2em;
+  padding:.3rem .8rem;
+  border-radius:6px;
+  margin-bottom:1rem;
+}
+.section-label.g{
+  background:rgba(0,255,136,.08);
+  border:1px solid rgba(0,255,136,.2);
+  color:var(--g);
+}
+.section-label.b{
+  background:rgba(0,210,255,.08);
+  border:1px solid rgba(0,210,255,.2);
+  color:var(--b);
+}
+.section-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:800;
+  color:#fff;
+  line-height:1.15;
+  margin-bottom:.75rem;
+}
+.section-desc{
+  font-size:1rem;
+  color:var(--muted);
+  max-width:580px;
+  font-weight:300;
+}
+
+/* HERO APP SECTION */
+.app-hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:center;
+  margin-bottom:5rem;
+}
+@media(max-width:768px){
+  .app-hero{grid-template-columns:1fr;gap:2.5rem}
+}
+
+/* PHONE MOCKUP CSS */
+.phone-wrap{
+  position:relative;
+  display:flex;justify-content:center;
+  height:480px;
+}
+.phone{
+  width:220px;
+  height:440px;
+  border-radius:36px;
+  border:2px solid rgba(255,255,255,.1);
+  background:var(--card);
+  position:absolute;
+  overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,.6);
+  display:flex;flex-direction:column;
+}
+.phone.front{
+  left:20px;
+  top:0;
+  z-index:2;
+  animation:phoneFloat 6s ease-in-out infinite;
+}
+.phone.back{
+  right:20px;
+  top:30px;
+  z-index:1;
+  opacity:.7;
+  animation:phoneFloat 7s 1s ease-in-out infinite;
+}
+.phone.g-phone{border-color:rgba(0,255,136,.25);box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 60px rgba(0,255,136,.08)}
+.phone.b-phone{border-color:rgba(0,210,255,.25);box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 60px rgba(0,210,255,.08)}
+@keyframes phoneFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-12px) rotate(1deg)}
+}
+.phone-notch{
+  width:80px;height:22px;
+  background:#000;
+  border-radius:0 0 12px 12px;
+  margin:0 auto;
+}
+.phone-screen{
+  flex:1;
+  padding:.6rem;
+  display:flex;flex-direction:column;
+  gap:.4rem;
+  overflow:hidden;
+}
+
+/* SCREEN MOCKUPS — BARBER STUDIO */
+.bs-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.3rem .4rem;
+}
+.bs-header-title{
+  font-family:'Space Mono',monospace;
+  font-size:.55rem;font-weight:700;
+  color:var(--g);letter-spacing:.1em;
+}
+.bs-stat-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:.3rem;
+}
+.bs-stat{
+  background:rgba(0,255,136,.06);
+  border:1px solid rgba(0,255,136,.12);
+  border-radius:10px;
+  padding:.5rem;
+  text-align:center;
+}
+.bs-stat-val{
+  font-family:'Space Mono',monospace;
+  font-size:.9rem;font-weight:700;
+  color:var(--g);
+}
+.bs-stat-label{
+  font-size:.38rem;color:rgba(255,255,255,.3);
+  letter-spacing:.1em;margin-top:.1rem;
+}
+.bs-bar-section{
+  background:rgba(255,255,255,.02);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.5rem;
+}
+.bs-bar-label{font-size:.4rem;color:var(--muted);letter-spacing:.08em;margin-bottom:.3rem}
+.bs-bar{
+  height:4px;border-radius:2px;
+  background:rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.bs-bar-fill{
+  height:100%;border-radius:2px;
+  background:linear-gradient(90deg,var(--g),var(--gd));
+  animation:barGrow 2s ease forwards;
+}
+@keyframes barGrow{from{width:0}to{width:var(--w,70%)}}
+.bs-turno{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:.4rem .5rem;
+  display:flex;align-items:center;gap:.4rem;
+}
+.bs-turno-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--g);
+  box-shadow:0 0 6px var(--g);
+  flex-shrink:0;
+}
+.bs-turno-info{flex:1}
+.bs-turno-name{font-size:.42rem;font-weight:700;color:#fff}
+.bs-turno-time{font-size:.36rem;color:var(--muted)}
+.bs-turno-price{
+  font-family:'Space Mono',monospace;
+  font-size:.45rem;color:var(--g);font-weight:700;
+}
+
+/* SCREEN MOCKUPS — CONNECT */
+.bc-header{
+  background:rgba(0,210,255,.06);
+  padding:.4rem;border-radius:8px;
+  display:flex;align-items:center;gap:.3rem;
+}
+.bc-header-icon{color:var(--b);font-size:.5rem}
+.bc-header-text{font-size:.42rem;font-weight:700;color:var(--b)}
+.bc-map{
+  flex:1;
+  background:rgba(0,210,255,.03);
+  border:1px solid rgba(0,210,255,.1);
+  border-radius:10px;
+  position:relative;overflow:hidden;
+  min-height:120px;
+}
+.bc-map-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,210,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,210,255,.04) 1px,transparent 1px);
+  background-size:18px 18px;
+}
+.bc-pin{
+  position:absolute;
+  width:12px;height:12px;
+  background:var(--b);
+  border-radius:50%;
+  border:2px solid #fff;
+  box-shadow:0 0 10px var(--b);
+}
+.bc-pin::after{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:22px;height:22px;
+  border:1px solid rgba(0,210,255,.3);
+  border-radius:50%;
+  animation:ping 1.5s ease-in-out infinite;
+}
+.bc-pin.p1{top:30%;left:25%}
+.bc-pin.p2{top:50%;left:60%}
+.bc-pin.p3{top:70%;left:40%}
+@keyframes ping{
+  0%{transform:translate(-50%,-50%) scale(1);opacity:.8}
+  100%{transform:translate(-50%,-50%) scale(2.5);opacity:0}
+}
+.bc-barber-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:.4rem .5rem;
+  display:flex;align-items:center;gap:.4rem;
+}
+.bc-avatar{
+  width:24px;height:24px;border-radius:50%;
+  background:linear-gradient(135deg,var(--b),#0055aa);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.5rem;color:#fff;font-weight:700;flex-shrink:0;
+}
+.bc-barber-info{flex:1}
+.bc-barber-name{font-size:.42rem;font-weight:700;color:#fff}
+.bc-stars{color:#ffc107;font-size:.35rem}
+.bc-badge{
+  font-size:.32rem;font-weight:700;
+  padding:.1rem .3rem;border-radius:4px;
+  background:rgba(0,255,136,.15);color:var(--g);
+}
+
+/* FEATURES GRID */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;
+  margin-top:3rem;
+}
+.feature-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.5rem;
+  transition:all .3s ease;
+  position:relative;
+  overflow:hidden;
+}
+.feature-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity .3s;
+  pointer-events:none;
+}
+.feature-card.g::before{background:radial-gradient(circle at top left,rgba(0,255,136,.06),transparent 70%)}
+.feature-card.b::before{background:radial-gradient(circle at top left,rgba(0,210,255,.06),transparent 70%)}
+.feature-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.12)}
+.feature-card.g:hover{border-color:rgba(0,255,136,.25);box-shadow:0 8px 30px rgba(0,255,136,.06)}
+.feature-card.b:hover{border-color:rgba(0,210,255,.25);box-shadow:0 8px 30px rgba(0,210,255,.06)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{
+  width:44px;height:44px;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+  margin-bottom:1rem;
+}
+.feature-icon.g{background:rgba(0,255,136,.1);color:var(--g);border:1px solid rgba(0,255,136,.15)}
+.feature-icon.b{background:rgba(0,210,255,.1);color:var(--b);border:1px solid rgba(0,210,255,.15)}
+.feature-title{
+  font-family:'Syne',sans-serif;
+  font-size:1rem;font-weight:700;
+  color:#fff;margin-bottom:.4rem;
+}
+.feature-desc{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* XP DISPLAY */
+.xp-section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:2rem;
+  margin:3rem 0;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:1.5rem;
+  align-items:center;
+}
+@media(max-width:600px){.xp-section{grid-template-columns:1fr}}
+.xp-badge{
+  width:80px;height:80px;
+  border-radius:20px;
+  background:linear-gradient(135deg,var(--g),var(--gd));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;
+  color:#000;
+  flex-shrink:0;
+}
+.xp-badge-lvl{font-size:.6rem;font-weight:700;letter-spacing:.1em}
+.xp-badge-num{font-size:2rem;font-weight:700;line-height:1}
+.xp-info-title{
+  font-family:'Syne',sans-serif;
+  font-size:1.2rem;font-weight:800;color:#fff;
+}
+.xp-info-sub{font-size:.8rem;color:var(--muted);margin-bottom:.75rem}
+.xp-bar-wrap{
+  height:8px;border-radius:4px;
+  background:rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.xp-bar-fill{
+  height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--g),#00ffcc);
+  width:70%;
+  animation:barGrow 1.5s ease forwards;
+  box-shadow:0 0 10px rgba(0,255,136,.4);
+}
+.xp-levels{
+  display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem;
+}
+.xp-level-chip{
+  padding:.25rem .6rem;border-radius:6px;
+  font-size:.7rem;font-weight:700;
+  border:1px solid rgba(0,255,136,.2);
+  color:rgba(255,255,255,.3);
+  background:rgba(255,255,255,.02);
+}
+.xp-level-chip.active{
+  border-color:var(--g);color:var(--g);
+  background:rgba(0,255,136,.08);
+}
+
+/* RADAR SECTION */
+.radar-section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:2rem;
+  margin:1rem 0;
+  display:flex;align-items:center;gap:2rem;
+  flex-wrap:wrap;
+}
+.radar-visual{
+  position:relative;
+  width:100px;height:100px;
+  flex-shrink:0;
+}
+.radar-circle{
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(0,255,136,.2);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+}
+.radar-circle.c1{width:30px;height:30px;background:rgba(0,255,136,.2)}
+.radar-circle.c2{width:55px;height:55px}
+.radar-circle.c3{width:80px;height:80px}
+.radar-circle.c4{width:100px;height:100px}
+.radar-sweep{
+  position:absolute;
+  width:50%;height:2px;
+  background:linear-gradient(to right,rgba(0,255,136,.8),transparent);
+  top:50%;left:50%;
+  transform-origin:left center;
+  animation:sweep 2s linear infinite;
+}
+@keyframes sweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.radar-dot{
+  position:absolute;
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--g);
+  box-shadow:0 0 6px var(--g);
+}
+.radar-dot.d1{top:20%;left:65%}
+.radar-dot.d2{top:60%;left:30%}
+.radar-dot.d3{top:75%;left:70%}
+.radar-info-title{
+  font-family:'Syne',sans-serif;
+  font-size:1.1rem;font-weight:800;color:#fff;
+  display:flex;align-items:center;gap:.5rem;
+}
+.live-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--g);
+  animation:livePulse 1.5s ease-in-out infinite;
+  display:inline-block;
+}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,.6)}70%{box-shadow:0 0 0 6px rgba(0,255,136,0)}}
+.radar-info-desc{font-size:.85rem;color:var(--muted);margin-top:.3rem}
+.radar-modes{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
+.radar-mode{
+  padding:.3rem .8rem;border-radius:8px;
+  font-size:.75rem;font-weight:700;
+  border:1px solid;
+  cursor:pointer;
+}
+.radar-mode.on{
+  background:rgba(0,255,136,.1);
+  border-color:var(--g);color:var(--g);
+}
+.radar-mode.off{
+  background:rgba(255,255,255,.03);
+  border-color:rgba(255,255,255,.1);color:var(--muted);
+}
+
+/* FINANCE MOCKUP */
+.finance-display{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:2rem;
+  margin:2rem 0;
+}
+.finance-total{
+  text-align:center;
+  margin-bottom:1.5rem;
+}
+.finance-total-label{
+  font-size:.65rem;letter-spacing:.2em;color:var(--muted);
+  font-weight:700;
+}
+.finance-total-num{
+  font-family:'Space Mono',monospace;
+  font-size:3rem;font-weight:700;color:#fff;
+  margin:.25rem 0;
+}
+.finance-total-num .g{color:var(--g)}
+.finance-period-tabs{
+  display:flex;gap:.4rem;
+  background:rgba(255,255,255,.03);
+  border-radius:10px;
+  padding:.3rem;
+  margin-bottom:1.5rem;
+  flex-wrap:wrap;
+}
+.finance-tab{
+  flex:1;padding:.4rem;
+  text-align:center;
+  border-radius:7px;
+  font-size:.7rem;font-weight:700;
+  color:var(--muted);
+  cursor:pointer;
+  transition:all .2s;
+  min-width:60px;
+}
+.finance-tab.active{
+  background:var(--g);color:#000;
+}
+.finance-bars{
+  display:flex;align-items:flex-end;gap:.5rem;
+  height:60px;
+}
+.finance-bar{
+  flex:1;border-radius:4px 4px 0 0;
+  background:rgba(0,255,136,.15);
+  position:relative;
+  transition:all .3s;
+}
+.finance-bar.today{background:var(--g);box-shadow:0 0 15px rgba(0,255,136,.3)}
+.finance-bar-label{
+  position:absolute;bottom:-1.2rem;left:50%;
+  transform:translateX(-50%);
+  font-size:.45rem;color:var(--muted);white-space:nowrap;
+}
+
+/* STATS ROW */
+.stats-row{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  margin:2rem 0;
+}
+.stat-card{
+  flex:1;min-width:140px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1.2rem;
+  text-align:center;
+}
+.stat-card-num{
+  font-family:'Space Mono',monospace;
+  font-size:1.8rem;font-weight:700;color:#fff;
+}
+.stat-card-num.g{color:var(--g)}
+.stat-card-num.b{color:var(--b)}
+.stat-card-label{font-size:.7rem;color:var(--muted);margin-top:.2rem;font-weight:500}
+
+/* TUTORIAL SECTION */
+.tutorial-steps{
+  display:flex;flex-direction:column;gap:1px;
+  margin-top:2rem;
+}
+.step{
+  display:grid;
+  grid-template-columns:40px 1fr;
+  gap:1.25rem;
+  position:relative;
+}
+.step::before{
+  content:'';
+  position:absolute;
+  left:19px;top:40px;bottom:-1px;
+  width:1px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.08),transparent);
+}
+.step:last-child::before{display:none}
+.step-num{
+  width:40px;height:40px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;
+  font-size:.8rem;font-weight:700;
+  flex-shrink:0;
+  position:relative;z-index:1;
+}
+.step-num.g{
+  background:rgba(0,255,136,.1);
+  border:1px solid rgba(0,255,136,.3);
+  color:var(--g);
+}
+.step-num.b{
+  background:rgba(0,210,255,.1);
+  border:1px solid rgba(0,210,255,.3);
+  color:var(--b);
+}
+.step-content{padding-bottom:2rem}
+.step-title{
+  font-family:'Syne',sans-serif;
+  font-size:1rem;font-weight:700;color:#fff;margin-bottom:.3rem;
+}
+.step-desc{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* DUAL FEATURE */
+.dual-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5rem;
+  margin-top:2rem;
+}
+@media(max-width:640px){.dual-grid{grid-template-columns:1fr}}
+.dual-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.5rem;
+}
+.dual-card.g{border-color:rgba(0,255,136,.15)}
+.dual-card.b{border-color:rgba(0,210,255,.15)}
+.dual-card-header{
+  display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;
+}
+.dual-tag{
+  font-family:'Syne',sans-serif;
+  font-size:.6rem;font-weight:800;letter-spacing:.12em;
+  padding:.2rem .5rem;border-radius:5px;
+}
+.dual-tag.g{background:rgba(0,255,136,.1);color:var(--g)}
+.dual-tag.b{background:rgba(0,210,255,.1);color:var(--b)}
+.dual-list{
+  display:flex;flex-direction:column;gap:.6rem;
+}
+.dual-item{
+  display:flex;align-items:flex-start;gap:.6rem;
+  font-size:.85rem;color:var(--muted);
+}
+.dual-item i{
+  font-size:.75rem;margin-top:.2rem;flex-shrink:0;
+}
+.dual-item i.g{color:var(--g)}
+.dual-item i.b{color:var(--b)}
+
+/* FAQ */
+.faq-wrap{max-width:720px;margin:2.5rem auto 0}
+.faq-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:.6rem;
+  overflow:hidden;
+  transition:border-color .3s;
+}
+.faq-item.g:focus-within,.faq-item.g:has(details[open]){border-color:rgba(0,255,136,.25)}
+.faq-item.b:focus-within,.faq-item.b:has(details[open]){border-color:rgba(0,210,255,.25)}
+.faq-item details summary{
+  list-style:none;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 1.25rem;
+  cursor:pointer;
+  font-weight:600;font-size:.9rem;color:#fff;
+  gap:1rem;
+  user-select:none;
+}
+.faq-item details summary::-webkit-details-marker{display:none}
+.faq-chevron{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;flex-shrink:0;
+  transition:transform .3s,background .2s;
+}
+.faq-item.g .faq-chevron{background:rgba(0,255,136,.1);color:var(--g)}
+.faq-item.b .faq-chevron{background:rgba(0,210,255,.1);color:var(--b)}
+.faq-item details[open] .faq-chevron{transform:rotate(180deg)}
+.faq-item details p{
+  padding:.1rem 1.25rem 1.25rem;
+  font-size:.85rem;color:var(--muted);
+  line-height:1.7;
+  border-top:1px solid var(--border);
+  padding-top:.75rem;
+}
+
+/* DOWNLOAD SECTION */
+.download-section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:3rem 2rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  margin:3rem 0;
+}
+.download-section::before{
+  content:'';
+  position:absolute;inset:0;
+  pointer-events:none;
+}
+.download-section.g::before{
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,255,136,.08),transparent 70%);
+}
+.download-section.b::before{
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,210,255,.08),transparent 70%);
+}
+.download-btns{
+  display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+  margin-top:1.5rem;
+}
+.dl-btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.85rem 1.75rem;
+  border-radius:12px;
+  font-weight:700;font-size:.9rem;
+  text-decoration:none;
+  transition:all .3s;
+}
+.dl-btn.primary-g{
+  background:var(--g);color:#000;
+  box-shadow:0 4px 20px rgba(0,255,136,.25);
+}
+.dl-btn.primary-g:hover{
+  background:#00ffaa;
+  box-shadow:0 8px 30px rgba(0,255,136,.4);
+  transform:translateY(-2px);
+}
+.dl-btn.primary-b{
+  background:var(--b);color:#000;
+  box-shadow:0 4px 20px rgba(0,210,255,.25);
+}
+.dl-btn.primary-b:hover{
+  background:#22ddff;
+  box-shadow:0 8px 30px rgba(0,210,255,.4);
+  transform:translateY(-2px);
+}
+.dl-btn.ghost-g{
+  border:1.5px solid rgba(0,255,136,.4);color:var(--g);
+  background:rgba(0,255,136,.05);
+}
+.dl-btn.ghost-g:hover{background:rgba(0,255,136,.1);transform:translateY(-2px)}
+.dl-btn.ghost-b{
+  border:1.5px solid rgba(0,210,255,.4);color:var(--b);
+  background:rgba(0,210,255,.05);
+}
+.dl-btn.ghost-b:hover{background:rgba(0,210,255,.1);transform:translateY(-2px)}
+
+/* DIVIDER */
+.divider{
+  height:1px;
+  background:linear-gradient(to right,transparent,var(--border),transparent);
+  margin:2rem 0;
+}
+
+/* PROPINA HIGHLIGHT */
+.highlight-box{
+  background:var(--card);
+  border-radius:16px;
+  padding:1.5rem;
+  display:flex;align-items:flex-start;gap:1rem;
+  border:1px solid rgba(0,255,136,.12);
+  margin:1.5rem 0;
+  position:relative;overflow:hidden;
+}
+.highlight-box::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:3px;height:100%;
+  background:var(--g);
+  border-radius:0 2px 2px 0;
+}
+.highlight-icon{
+  font-size:1.4rem;
+  color:var(--g);
+  flex-shrink:0;
+  margin-top:.1rem;
+}
+.highlight-title{
+  font-family:'Syne',sans-serif;
+  font-weight:700;color:#fff;margin-bottom:.3rem;
+}
+.highlight-desc{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* CONNECT CARD DISPLAY */
+.barber-cards-preview{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;margin:2rem 0;
+}
+.barber-preview-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.25rem;
+  transition:all .3s;
+}
+.barber-preview-card:hover{
+  border-color:rgba(0,210,255,.25);
+  transform:translateY(-3px);
+}
+.bp-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.bp-avatar{
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#fff;font-size:.85rem;
+  flex-shrink:0;
+}
+.bp-name{font-weight:700;color:#fff;font-size:.9rem}
+.bp-location{font-size:.75rem;color:var(--muted)}
+.bp-stars{color:#ffc107;font-size:.7rem;margin-bottom:.5rem}
+.bp-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.bp-tag{
+  font-size:.65rem;font-weight:700;
+  padding:.2rem .5rem;border-radius:5px;
+}
+.bp-tag.avail{background:rgba(0,255,136,.1);color:var(--g)}
+.bp-tag.rating{background:rgba(255,193,7,.1);color:#ffc107}
+.bp-tag.near{background:rgba(0,210,255,.1);color:var(--b)}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  background:rgba(0,0,0,.3);
+  position:relative;z-index:1;
+  padding:3rem 2rem 2rem;
+}
+.footer-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;
+}
+@media(max-width:640px){.footer-inner{grid-template-columns:1fr}}
+.footer-brand{
+  font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;
+  color:#fff;display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;
+}
+.footer-brand i{color:var(--g)}
+.footer-desc{font-size:.8rem;color:var(--muted);line-height:1.7}
+.footer-title{font-weight:700;color:#fff;margin-bottom:.75rem;font-size:.9rem}
+.footer-links{display:flex;flex-direction:column;gap:.4rem}
+.footer-link{
+  font-size:.8rem;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:.4rem;
+  transition:color .2s;
+}
+.footer-link:hover{color:#fff}
+.footer-link i{font-size:.7rem}
+.footer-bottom{
+  max-width:1100px;margin:2rem auto 0;
+  padding-top:1.5rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:.75rem;
+}
+.footer-copy{font-size:.75rem;color:var(--muted)}
+.footer-copy span{color:var(--g)}
+
+/* FLOATING BUTTONS */
+.float-wrap{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  display:flex;flex-direction:column;gap:.75rem;
+  align-items:flex-end;
+  z-index:200;
+}
+.float-btn{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+  text-decoration:none;
+  transition:all .3s;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+  animation:floatAnim 4s ease-in-out infinite;
+}
+.float-btn.g{
+  background:var(--g);color:#000;
+  box-shadow:0 4px 20px rgba(0,255,136,.35);
+}
+.float-btn.b{
+  background:var(--b);color:#000;
+  box-shadow:0 4px 20px rgba(0,210,255,.35);
+  animation-delay:.5s;
+}
+.float-btn.wa{
+  background:#25d366;color:#fff;
+  box-shadow:0 4px 20px rgba(37,211,102,.3);
+  animation-delay:1s;
+}
+.float-btn:hover{transform:scale(1.12) translateY(-3px) !important}
+.float-label{
+  position:absolute;right:58px;
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:.25rem .6rem;
+  font-size:.65rem;font-weight:700;
+  white-space:nowrap;color:#fff;
+  pointer-events:none;
+  opacity:0;
+  transform:translateX(5px);
+  transition:all .2s;
+}
+.float-btn:hover .float-label{opacity:1;transform:translateX(0)}
+.float-item{position:relative;display:flex;align-items:center}
+@keyframes floatAnim{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+
+/* NOTIFICATION DEMO */
+.notif-demo{
+  background:var(--card2);
+  border:1px solid rgba(0,255,136,.15);
+  border-radius:14px;
+  padding:1rem 1.25rem;
+  display:flex;align-items:center;gap:.9rem;
+  max-width:380px;
+  animation:slideNotif 4s ease-in-out infinite;
+}
+@keyframes slideNotif{
+  0%{transform:translateX(-8px);opacity:0}
+  10%,85%{transform:translateX(0);opacity:1}
+  100%{transform:translateX(-8px);opacity:0}
+}
+.notif-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(0,255,136,.1);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--g);font-size:.9rem;flex-shrink:0;
+}
+.notif-title{font-size:.8rem;font-weight:700;color:#fff}
+.notif-sub{font-size:.7rem;color:var(--muted);margin-top:.1rem}
+
+/* CATALOG PREVIEW */
+.catalog-preview{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;
+  margin-top:1.25rem;
+}
+.catalog-item{
+  aspect-ratio:1;
+  border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.3rem;font-size:.65rem;font-weight:700;
+  border:1px solid var(--border);
+  color:var(--muted);
+  background:var(--card);
+  transition:all .2s;
+  cursor:default;
+}
+.catalog-item i{font-size:1.1rem}
+.catalog-item.g{border-color:rgba(0,255,136,.15);color:var(--g);background:rgba(0,255,136,.04)}
+.catalog-item:hover{border-color:rgba(0,255,136,.3);transform:scale(1.03)}
+
+/* CHAT DEMO */
+.chat-demo{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.25rem;
+  max-width:380px;
+}
+.chat-header{
+  display:flex;align-items:center;gap:.6rem;
+  margin-bottom:.75rem;padding-bottom:.75rem;
+  border-bottom:1px solid var(--border);
+}
+.chat-avatar{
+  width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,var(--g),var(--gd));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:700;color:#000;
+}
+.chat-name{font-size:.8rem;font-weight:700;color:#fff}
+.chat-status{font-size:.65rem;color:var(--g)}
+.chat-bubble{
+  display:flex;flex-direction:column;gap:.4rem;
+}
+.bubble{
+  padding:.45rem .7rem;border-radius:10px;
+  font-size:.72rem;max-width:80%;
+}
+.bubble.them{
+  background:rgba(255,255,255,.05);
+  color:#fff;border-radius:4px 10px 10px 10px;
+  align-self:flex-start;
+}
+.bubble.me{
+  background:rgba(0,255,136,.15);
+  color:var(--g);border-radius:10px 4px 10px 10px;
+  align-self:flex-end;
+  margin-left:auto;
+}
+
+/* OFFLINE BADGE */
+.offline-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(255,165,0,.08);
+  border:1px solid rgba(255,165,0,.2);
+  border-radius:8px;
+  padding:.4rem .8rem;
+  font-size:.75rem;font-weight:700;color:#ffa500;
+  margin:1rem 0;
+}
+
+/* RESPONSIVE TWEAKS */
+@media(max-width:480px){
+  nav{padding:1rem}
+  .nav-logo span{font-size:.9rem}
+  .float-wrap{bottom:1rem;right:1rem}
+  .float-btn{width:46px;height:46px;font-size:1rem}
+  .app-hero{gap:2rem}
+  .phone-wrap{height:380px}
+  .phone{width:170px;height:340px;border-radius:28px}
+}
+
+/* SECTION TRANSITIONS */
+.section{
+  animation:sectionIn .5s ease;
+}
+@keyframes sectionIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* WEB BADGE */
+.web-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(0,210,255,.06);
+  border:1px solid rgba(0,210,255,.2);
+  border-radius:12px;
+  padding:.6rem 1rem;
+  font-size:.8rem;color:var(--b);
+  margin:1rem 0;
+}
+.web-badge i{font-size:.9rem}
+
+/* SEPARATOR */
+.mode-divider{
+  height:1px;
+  background:linear-gradient(to right,transparent,var(--border),transparent);
+  max-width:1200px;margin:0 auto;
+}
+
+/* CONNECT MAP FULL */
+.map-full-demo{
+  background:var(--card);
+  border:1px solid rgba(0,210,255,.15);
+  border-radius:20px;
+  padding:1.5rem;
+  position:relative;
+  overflow:hidden;
+  min-height:200px;
+  margin:1.5rem 0;
+}
+.map-full-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,210,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,210,255,.03) 1px,transparent 1px);
+  background-size:30px 30px;
+}
+.map-full-pins{position:relative;height:160px}
+.map-full-pin{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;gap:.2rem;
+}
+.map-pin-dot{
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid #fff;
+}
+.map-pin-dot.g{background:var(--g);box-shadow:0 0 12px var(--g)}
+.map-pin-dot.b{background:var(--b);box-shadow:0 0 12px var(--b)}
+.map-pin-dot.y{background:#ffc107;box-shadow:0 0 12px #ffc107}
+.map-pin-label{
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:5px;
+  padding:.15rem .4rem;
+  font-size:.55rem;font-weight:700;color:#fff;
+  white-space:nowrap;
+}
+.map-user{
+  position:absolute;
+  bottom:20%;left:50%;transform:translateX(-50%);
+}
+.map-user-dot{
+  width:18px;height:18px;border-radius:50%;
+  background:#fff;
+  border:3px solid var(--b);
+  box-shadow:0 0 20px rgba(0,210,255,.5);
+}
+.map-user-ring{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:50px;height:50px;
+  border:1.5px solid rgba(0,210,255,.3);
+  border-radius:50%;
+  animation:ringExpand 2s ease-in-out infinite;
+}
+@keyframes ringExpand{
+  0%{width:20px;height:20px;opacity:.8}
+  100%{width:80px;height:80px;opacity:0}
+}
+</style>
 </head>
 <body>
-    <div id="preloader" class="fixed inset-0 z-[999] bg-dark flex items-center justify-center transition-opacity duration-700">
-        <div class="relative">
-            <div class="absolute inset-0 bg-barber blur-xl opacity-50 rounded-full animate-pulse-glow"></div>
-            <i class="fa-solid fa-scissors text-6xl text-barber relative z-10 animate-bounce"></i>
-        </div>
-    </div>
 
-    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-20"></div>
-        <div id="blob-barber" class="absolute top-0 left-1/4 w-96 h-96 bg-barber rounded-full mix-blend-multiply filter blur-[120px] opacity-20 animate-blob"></div>
-        <div id="blob-client" class="absolute top-0 right-1/4 w-96 h-96 bg-client rounded-full mix-blend-multiply filter blur-[120px] opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute bottom-[-20%] left-1/3 w-[500px] h-[500px] bg-purple-900 rounded-full mix-blend-multiply filter blur-[150px] opacity-20 animate-blob animation-delay-4000"></div>
-    </div>
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-inner">
+    <i class="fa-solid fa-scissors preloader-icon"></i>
+    <div class="preloader-text">CARGANDO ECOSYSTEM</div>
+  </div>
+</div>
 
-    <nav class="fixed w-full z-50 glass-high p-4 border-b border-white/5 transition-all duration-300">
-        <div class="container mx-auto flex justify-between items-center relative">
-            <div class="flex items-center gap-3 group cursor-pointer">
-                <div class="relative">
-                    <div class="absolute inset-0 bg-barber blur-lg opacity-40 group-hover:opacity-80 transition duration-500 rounded-full"></div>
-                    <i class="fa-solid fa-scissors text-2xl text-white relative z-10 transform group-hover:rotate-180 transition duration-700"></i>
-                </div>
-                <h1 class="text-2xl font-bold tracking-widest text-white">BARBER <span id="nav-suffix" class="text-barber text-glow-barber transition-all duration-500">ECOSYSTEM</span></h1>
-            </div>
-            <div>
-                <a href="https://wa.me/+5351881471" class="px-5 py-2 rounded-full glass hover:bg-white/10 transition border border-white/10 hover:border-white/30 flex items-center gap-2 group">
-                    <i class="fa-brands fa-whatsapp text-green-400 group-hover:scale-110 transition"></i> Soporte
-                </a>
-            </div>
-        </div>
-    </nav>
+<!-- AMBIENT -->
+<div class="blob-wrap">
+  <div class="blob blob-g"></div>
+  <div class="blob blob-b"></div>
+  <div class="blob blob-p"></div>
+</div>
 
-    <div class="relative z-10 pt-32 pb-12 text-center container mx-auto px-4">
-        <span class="inline-block py-1 px-3 rounded-full glass border border-white/10 text-xs font-bold tracking-widest text-gray-400 mb-4 animate-bounce">SELECCIONA TU PERFIL</span>
-        <h2 class="text-4xl md:text-6xl font-bold mb-10 text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 drop-shadow-sm" data-aos="fade-down">¿Cuál es tu misión hoy?</h2>
-
-        <div class="flex flex-col md:flex-row justify-center gap-8 mb-16 perspective-container" data-aos="zoom-in">
-            <button onclick="setMode('barber')" id="btn-barber" class="group relative px-10 py-5 rounded-2xl text-xl font-bold transition-all duration-500 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,255,136,0.2)] bg-black border border-barber/30 overflow-hidden">
-                <div class="absolute inset-0 bg-barber/10 group-hover:bg-barber/20 transition duration-500"></div>
-                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-barber/20 to-transparent"></div>
-                <div class="relative z-10 flex items-center justify-center gap-3 text-barber group-hover:text-white transition-colors">
-                    <i class="fa-solid fa-user-tie text-2xl"></i> 
-                    <span>SOY BARBERO</span>
-                </div>
-            </button>
-
-            <button onclick="setMode('client')" id="btn-client" class="group relative px-10 py-5 rounded-2xl text-xl font-bold transition-all duration-500 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,210,255,0.2)] bg-black border border-client/30 overflow-hidden">
-                <div class="absolute inset-0 bg-client/10 group-hover:bg-client/20 transition duration-500"></div>
-                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-client/20 to-transparent"></div>
-                <div class="relative z-10 flex items-center justify-center gap-3 text-client group-hover:text-white transition-colors">
-                    <i class="fa-solid fa-user text-2xl"></i> 
-                    <span>SOY CLIENTE</span>
-                </div>
-            </button>
-        </div>
-    </div>
-
-    <div id="barber-section" class="visible-content container mx-auto px-4 pb-20 relative z-20">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-10 mb-20">
-            <div class="md:w-1/2" data-aos="fade-right">
-                <span class="inline-block py-1 px-3 rounded text-xs font-bold bg-barber/10 text-barber border border-barber/20 mb-4 tracking-widest">BARBER STUDIO APP</span>
-                <h1 class="text-5xl md:text-7xl font-bold mt-2 mb-6 leading-tight drop-shadow-2xl">Tu Negocio,<br>Nivel <span class="text-transparent bg-clip-text bg-gradient-to-r from-barber to-emerald-400 text-glow-barber">PRO</span>.</h1>
-                <p class="text-gray-400 text-lg mb-8 leading-relaxed">Olvídate de la libreta. Gestiona tu agenda, controla tus finanzas diarias y fideliza clientes con tecnología de punta.</p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#descargar-barbero" class="group relative px-8 py-3 bg-barber text-dark font-bold rounded-lg overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(0,255,136,0.6)]">
-                        <div class="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                        <span class="relative flex items-center gap-2"><i class="fa-solid fa-download"></i> Descargar APK</span>
-                    </a>
-                    <div class="flex flex-col items-center">
-                        <a href="https://gestion-de-negocio.github.io/gestion-barberia/" target="_blank" class="px-8 py-3 glass border border-barber/30 text-barber rounded-lg hover:bg-barber/10 transition flex items-center gap-2 group shadow-[0_0_15px_rgba(0,255,136,0.2)] hover:shadow-[0_0_25_rgba(0,255,136,0.4)]">
-                            <i class="fa-solid fa-display group-hover:scale-110 transition"></i> Gestión Web (PC)
-                        </a>
-                        <span class="text-[9px] text-barber mt-2 font-black tracking-tighter animate-pulse uppercase">Control total de tu Salón aquí</span>
-                    </div>
-                    <a href="#faq-barbero" class="px-8 py-3 border border-white/20 text-white rounded-lg hover:bg-white/5 transition flex items-center gap-2">Ver Dudas</a>
-                </div>
-            </div>
-
-            <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0 perspective-container" data-aos="fade-left">
-                <div class="absolute inset-0 bg-barber blur-[90px] opacity-20 animate-pulse"></div>
-                <div class="relative w-full flex justify-center h-[500px]">
-                    <img src="Screenshot_20260218-090943_Barber Studio.jpg" class="card-3d absolute left-0 w-[55%] rounded-3xl border border-barber/30 shadow-[0_0_40px_rgba(0,255,136,0.15)] z-20 animate-float object-cover h-[450px]" alt="Agenda Barber Studio">
-                    <img src="Screenshot_20260218-090840_Barber Studio.jpg" class="card-3d absolute right-0 top-10 w-[55%] rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-10 animate-float-delayed object-cover h-[450px]" alt="Finanzas Barber Studio">
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl font-bold mb-4 text-white">Potencia Visual para tu Negocio</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Revisa tu progreso con gráficos detallados y controla tu meta mensual.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
-                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-calendar-check"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Agenda Blindada Offline</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Base de datos local en tu teléfono. Si se cae ETECSA, sigues trabajando. Sincronización automática al conectar.</p>
-            </div>
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="150">
-                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-sack-dollar"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Control Financiero</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Cierre de Caja automático. Fija tu meta mensual (ej. $80,000) y mira la barra de progreso llenarse.</p>
-            </div>
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="200">
-                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-fingerprint"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Seguridad Hardware</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Tu cuenta se casa con tu teléfono. Nadie puede abrir tu agenda en otro dispositivo sin tu permiso.</p>
-            </div>
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="250">
-                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-users-viewfinder"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Expediente Clientes</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Historial completo: fechas, gastos y cortes realizados. Fidelización profesional.</p>
-            </div>
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="300">
-                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-bell"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Alarmas Exactas</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">La App te despierta con una notificación precisa antes de cada turno. Cero olvidos.</p>
-            </div>
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="350">
-                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-bolt"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Turno Rápido</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Agrega clientes sin cita en 2 segundos con el botón flotante. Actualización instantánea.</p>
-            </div>
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-barber/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="400">
-                <div class="absolute inset-0 bg-barber/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-barber/10 rounded-xl flex items-center justify-center text-barber text-2xl mb-6 border border-barber/20 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition duration-300"><i class="fa-solid fa-shop"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-barber transition">Gestión de Salón</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Control total del equipo desde los Ajustes. Gestiona barberos, disponibilidad y cierres vía Web o APK en tiempo real.</p>
-            </div>
-        </div>
-
-        <div class="text-center mb-16 mt-10" data-aos="fade-up">
-            <h2 class="text-3xl font-bold mb-4 text-white">Lo que dicen los <span class="text-barber text-glow-barber">Expertos</span></h2>
-        </div>
-        <div class="flex flex-col md:flex-row gap-6 mb-20">
-            <div class="glass p-6 rounded-2xl border border-white/5 flex-1 relative" data-aos="fade-up" data-aos-delay="100">
-                <div class="flex text-yellow-400 text-sm mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="text-gray-300 italic mb-4">"Desde que uso Barber Studio mi caja cuadra sola al final del día. Adiós a la libreta y a los dolores de cabeza."</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-barber/20 flex items-center justify-center text-barber font-bold">JD</div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm">Jorge Díaz</h4>
-                        <span class="text-barber text-xs">Barbero Independiente</span>
-                    </div>
-                </div>
-            </div>
-            <div class="glass p-6 rounded-2xl border border-white/5 flex-1 relative" data-aos="fade-up" data-aos-delay="200">
-                <div class="flex text-yellow-400 text-sm mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="text-gray-300 italic mb-4">"El sistema de Alarmas Exactas me salvó. Mis clientes no faltan y tengo mi agenda offline siempre conmigo."</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-barber/20 flex items-center justify-center text-barber font-bold">LM</div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm">Luis Martínez</h4>
-                        <span class="text-barber text-xs">Dueño de Salón</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="faq-barbero" class="max-w-3xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-10 text-white">Dudas del <span class="text-barber text-glow-barber">Barbero</span></h2>
-
-            <div class="space-y-4">
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
-                        1. ¿Funciona si se me va la conexión o los datos?
-                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Absolutamente. Barber Studio usa una base de datos local (SQLite). Puedes agendar, cobrar y ver el historial sin internet. En cuanto te conectes, la App sube todo a la nube automáticamente.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
-                        2. ¿Qué es el ID de Seguridad por Hardware?
-                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Es un sistema anti-robo. Tu cuenta se vincula al ID físico de tu teléfono. Si alguien roba tu contraseña e intenta entrar desde otro celular, el sistema lo bloquea. Solo tú puedes autorizar un cambio de dispositivo.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
-                        3. ¿Cómo funciona el Cierre Diario?
-                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">La App suma todos los cortes completados y los ingresos extra del día. A las 11:59 PM genera un reporte automático que se guarda en tu historial financiero. No tienes que sacar cuentas a mano.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
-                        4. ¿Puedo agendar a alguien que no tiene la App?
-                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Sí, usas el botón Turno Rápido. Solo pones nombre, hora y precio. Se guarda al instante en tu agenda como un turno manual.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
-                        5. ¿Las notificaciones suenan sin saldo?
-                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Sí. Usamos el sistema de Alarmas Exactas de Android. Tu teléfono te avisará del turno aunque no tengas megas ni Wi-Fi, porque la alarma está guardada en el dispositivo.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
-                        6. ¿Qué pasa si cambio de teléfono?
-                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Debes contactar a Soporte desde la App vieja o por WhatsApp para liberar tu ID. Una vez liberado, inicias sesión en el teléfono nuevo y se descargan todos tus datos desde la nube.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
-                        7. ¿Tiene costo la aplicación?
-                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">Barber Studio es una herramienta profesional premium. Contacta a soporte para conocer los planes de suscripción activos en Cuba.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-barber transition">
-                        8. ¿Cómo entro a la versión de PC o Laptop?
-                        <span class="transition transform group-open:rotate-180 bg-barber/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-barber leading-relaxed">No necesitas descargar nada. Solo toca el botón "Gestión Web" arriba o entra al link de gestión desde tu navegador. Inicia sesión con tus mismos datos de la APK y tendrás el control total en pantalla grande.</p>
-                </details>
-            </div>
-        </div>
-    </div>
-
-    <div id="client-section" class="hidden-content container mx-auto px-4 pb-20 hidden relative z-20">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-10 mb-20">
-            <div class="md:w-1/2" data-aos="fade-right">
-                <span class="inline-block py-1 px-3 rounded text-xs font-bold bg-client/10 text-client border border-client/20 mb-4 tracking-widest">BARBER CONNECT APP</span>
-                <h1 class="text-5xl md:text-7xl font-bold mt-2 mb-6 leading-tight drop-shadow-2xl">Tu Estilo,<br>Sin <span class="text-transparent bg-clip-text bg-gradient-to-r from-client to-blue-400 text-glow-client">ESPERAS</span>.</h1>
-                <p class="text-gray-400 text-lg mb-8 leading-relaxed">Encuentra los mejores barberos cerca de ti, mira sus horarios libres y reserva en segundos. Cero llamadas, cero estrés.</p>
-                <div class="glass p-6 rounded-2xl border-2 border-client/50 mb-8 relative overflow-hidden group shadow-[0_0_20px_rgba(0,210,255,0.1)]">
-                    <div class="absolute -right-4 -top-4 w-20 h-20 bg-client/20 blur-2xl rounded-full"></div>
-                    <div class="flex items-center gap-4 relative z-10">
-                        <div class="flex -space-x-2">
-                            <div class="w-12 h-12 rounded-xl glass flex items-center justify-center text-client border border-client/30 shadow-lg group-hover:rotate-6 transition duration-300">
-                                <i class="fa-solid fa-desktop text-xl"></i>
-                            </div>
-                            <div class="w-12 h-12 rounded-xl glass flex items-center justify-center text-client border border-client/30 shadow-lg group-hover:-rotate-6 transition duration-300">
-                                <i class="fa-brands fa-apple text-2xl"></i>
-                            </div>
-                        </div>
-                        <div class="text-left">
-                            <h4 class="text-white font-bold text-lg leading-none mb-1">Reserva Web Disponible</h4>
-                            <p class="text-gray-400 text-sm">¿Usas iPhone o PC? Reserva directamente desde la web sin necesidad de descargar la APK.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#descargar-cliente" class="group relative px-8 py-3 bg-client text-dark font-bold rounded-lg overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(0,210,255,0.6)]">
-                        <div class="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                        <span class="relative flex items-center gap-2"><i class="fa-solid fa-download"></i> Descargar APK</span>
-                    </a>
-                    <a href="https://barber-connect-versionweb.github.io/Barber-connect/" target="_blank" class="px-8 py-3 glass border border-client/30 text-client rounded-lg hover:bg-client/10 transition flex items-center gap-2 group shadow-[0_0_15px_rgba(0,210,255,0.2)] hover:shadow-[0_0_25px_rgba(0,210,255,0.4)]">
-                        <i class="fa-solid fa-globe group-hover:scale-110 transition"></i> Ir a la Web
-                    </a>
-                </div>
-            </div>
-
-            <div class="md:w-1/2 relative flex justify-center mt-10 md:mt-0 perspective-container" data-aos="fade-left">
-                <div class="absolute inset-0 bg-client blur-[90px] opacity-20 animate-pulse"></div>
-                <div class="relative w-full flex justify-center h-[500px]">
-                    <img src="Screenshot_20260218-091057.jpg" class="card-3d absolute left-0 w-[55%] rounded-3xl border border-client/30 shadow-[0_0_40px_rgba(0,210,255,0.15)] z-20 animate-float object-cover h-[450px]" alt="Mapa Barber Connect">
-                    <img src="Screenshot_20260218_095833.jpg" class="card-3d absolute right-0 top-12 w-[55%] rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-10 transform -rotate-6 animate-float-delayed object-cover h-[400px]" alt="Reserva Enviada Barber Connect">
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl font-bold mb-4 text-white">La Ciudad en tus Manos</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Explora el mapa interactivo para descubrir talentos a tu alrededor.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-client/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden">
-                <div class="absolute inset-0 bg-client/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-client/10 rounded-xl flex items-center justify-center text-client text-2xl mb-6 border border-client/20 group-hover:shadow-[0_0_20px_rgba(0,210,255,0.4)] transition duration-300"><i class="fa-solid fa-map-location-dot"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-client transition">Mapa en Vivo</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Usa tu GPS para ver barberías cercanas. Toca una y la app te muestra fotos, reseñas y su ubicación.</p>
-            </div>
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-client/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden">
-                <div class="absolute inset-0 bg-client/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-client/10 rounded-xl flex items-center justify-center text-client text-2xl mb-6 border border-client/20 group-hover:shadow-[0_0_20px_rgba(0,210,255,0.4)] transition duration-300"><i class="fa-solid fa-clock"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-client transition">Reserva Fácil</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Elige día y hora. Envía la solicitud y recibe la confirmación al instante. Tu barbero sabrá que vas.</p>
-            </div>
-            <div class="glass p-8 rounded-2xl border border-white/5 hover:border-client/50 transition duration-500 group hover:-translate-y-2 relative overflow-hidden">
-                <div class="absolute inset-0 bg-client/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <div class="w-14 h-14 bg-client/10 rounded-xl flex items-center justify-center text-client text-2xl mb-6 border border-client/20 group-hover:shadow-[0_0_20px_rgba(0,210,255,0.4)] transition duration-300"><i class="fa-solid fa-star"></i></div>
-                <h3 class="text-xl font-bold mb-3 text-white group-hover:text-client transition">Califica</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Después del corte, deja tu reseña. Ayuda a otros a encontrar a los mejores barberos.</p>
-            </div>
-        </div>
-
-        <div id="faq-cliente" class="max-w-3xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-10 text-white">Dudas del <span class="text-client text-glow-client">Cliente</span></h2>
-
-            <div class="space-y-4">
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
-                        1. ¿Cómo sé si el barbero aceptó mi cita?
-                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Recibirás una notificación inmediata en tu celular. Además, en la sección Mis Reservas, el turno cambiará de color naranja a verde.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
-                        2. ¿Necesito tener el GPS activado?
-                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Solo si quieres usar el Mapa para encontrar barberías cercanas a ti. Si ya conoces al barbero, puedes buscarlo por su nombre o número sin activar el GPS.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
-                        3. ¿Puedo cancelar un turno si no puedo ir?
-                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Sí. Tienes un botón de Cancelar en tus reservas. Al hacerlo, le notificamos al barbero al instante para que no pierda su tiempo.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
-                        4. ¿Me avisan si el barbero cancela?
-                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">Sí. Si el barbero tiene una emergencia y cancela tu cita, te llegará una alerta roja inmediatamente para que lo sepas y puedas reagendar.</p>
-                </details>
-
-                <details class="glass p-5 rounded-xl cursor-pointer group border border-white/5">
-                    <summary class="font-bold text-lg list-none flex justify-between items-center text-gray-200 group-hover:text-client transition">
-                        5. ¿La aplicación tiene costo para mí?
-                        <span class="transition transform group-open:rotate-180 bg-client/20 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-chevron-down text-sm"></i></span>
-                    </summary>
-                    <p class="text-gray-400 mt-4 pl-4 border-l-2 border-client leading-relaxed">No. Barber Connect es 100% gratuita para los clientes. Descargas, reservas y listo.</p>
-                </details>
-            </div>
-        </div>
-    </div>
-
-    <div class="fixed bottom-[135px] right-[25px] z-[100] flex flex-col items-end group">
-        <div class="bg-dark/90 backdrop-blur-xl text-client text-[10px] font-black py-1.5 px-4 rounded-xl mb-3 border border-client shadow-[0_0_25px_rgba(0,210,255,0.5)] whitespace-nowrap border-glow-client">
-            <span class="animate-flash-hide">✨ RESERVAR TURNO WEB</span>
-        </div>
-        <a href="https://barber-connect-versionweb.github.io/Barber-connect/" target="_blank" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-client via-indigo-600 to-client flex items-center justify-center text-3xl border border-white/40 relative overflow-hidden animate-glow-blue">
-            <div class="absolute inset-0 bg-white/10 animate-pulse"></div>
-            <i class="fa-solid fa-calendar-check text-white relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,1)] animate-bounce"></i>
-        </a>
-    </div>
-
-    <a href="#" id="floating-btn" class="fab-float bg-barber text-dark w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(0,255,136,0.6)] hover:scale-110 transition duration-300 border border-white/20">
-        <i class="fa-solid fa-cloud-arrow-down"></i>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <i class="fa-solid fa-scissors"></i>
+    <span>BARBER <em>ECOSYSTEM</em></span>
+  </a>
+  <div class="nav-right">
+    <a href="https://wa.me/+5351881471" class="nav-btn" target="_blank">
+      <i class="fa-brands fa-whatsapp" style="color:#25d366"></i> Soporte
     </a>
+    <a href="https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/BarberStudio.apk" class="nav-btn g">
+      <i class="fa-solid fa-download"></i> <span class="hide-xs">Descargar</span>
+    </a>
+  </div>
+</nav>
 
-    <footer class="py-12 border-t border-white/5 relative z-10 glass-high mt-10">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-left">
-                <div>
-                    <h3 class="text-xl font-bold text-white mb-4"><i class="fa-solid fa-scissors text-barber"></i> BARBER ECOSYSTEM</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">El ecosistema definitivo para barberos y clientes. Gestión profesional offline y reservas al instante.</p>
-                </div>
-                <div class="flex flex-col items-center md:items-start">
-                    <h4 class="text-white font-bold mb-4">Enlaces Rápidos</h4>
-                    <a href="https://wa.me/+5351881471" class="text-gray-400 hover:text-barber transition text-sm mb-2"><i class="fa-brands fa-whatsapp"></i> Soporte Técnico</a>
-                    <a href="#" class="text-gray-400 hover:text-barber transition text-sm mb-2"><i class="fa-solid fa-shield-halved"></i> Políticas de Privacidad</a>
-                    <a href="#" class="text-gray-400 hover:text-barber transition text-sm"><i class="fa-solid fa-file-contract"></i> Términos de Uso</a>
-                </div>
-                <div class="flex flex-col items-center md:items-start">
-                    <h4 class="text-white font-bold mb-4">Disponible en</h4>
-                    <a href="https://apklis.cu/" target="_blank" class="flex items-center gap-2 glass px-4 py-2 rounded-lg border border-white/10 hover:border-barber/50 transition mb-3">
-                        <i class="fa-brands fa-android text-barber text-xl"></i>
-                        <div class="text-left">
-                            <div class="text-[10px] text-gray-400 leading-none">Descargar en</div>
-                            <div class="text-sm font-bold text-white leading-none mt-1">Apklis</div>
-                        </div>
-                    </a>
-                    <div class="flex gap-4 mt-2">
-                        <a href="https://www.facebook.com/share/1874X9LGAy/" target="_blank" class="w-10 h-10 rounded-full glass flex items-center justify-center text-xl text-blue-500 hover:text-white hover:bg-blue-600 transition duration-300"><i class="fa-brands fa-facebook-f"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center pt-8 border-t border-white/5 text-gray-500 text-xs">
-                <p>© 2026 Barber Ecosystem. <span class="opacity-50">Desarrollado con <i class="fa-solid fa-bolt text-yellow-400"></i> en Cuba.</span></p>
-            </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <i class="fa-solid fa-bolt"></i>
+    ECOSISTEMA BARBERO · CUBA 2026
+  </div>
+  <h1 class="hero-title">
+    Tu barbería.<br>
+    <span class="g">Digital.</span> <span class="b">Conectada.</span>
+  </h1>
+  <p class="hero-sub">Dos apps que trabajan juntas — una para el barbero que gestiona, otra para el cliente que agenda. Sin papel, sin llamadas, sin límites.</p>
+
+  <div class="mode-selector">
+    <button class="mode-btn barber active" onclick="setMode('barber')" id="btn-barber">
+      <i class="fa-solid fa-user-tie"></i>
+      SOY BARBERO
+    </button>
+    <button class="mode-btn client" onclick="setMode('client')" id="btn-client">
+      <i class="fa-solid fa-user"></i>
+      SOY CLIENTE
+    </button>
+  </div>
+
+  <div class="scroll-hint">
+    <span>DESLIZA PARA VER TODO</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     BARBER STUDIO SECTION
+══════════════════════════════════════════════════════ -->
+<div id="barber-section">
+
+  <!-- APP HERO -->
+  <div class="section">
+    <div class="app-hero">
+      <div>
+        <div class="section-label g">
+          <i class="fa-solid fa-scissors"></i>
+          BARBER STUDIO APP
         </div>
-    </footer>
+        <h2 class="section-title">Tu negocio,<br>nivel <span style="color:var(--g)">PRO</span>.</h2>
+        <p class="section-desc">Agenda, finanzas, clientes y mucho más — en tu bolsillo. Funciona aunque se caiga ETECSA.</p>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 800, once: true });
+        <div class="offline-badge" style="margin-top:1.25rem">
+          <i class="fa-solid fa-wifi-slash"></i>
+          100% Funcional Sin Internet · Sincroniza sola al conectar
+        </div>
 
-        const linkBarber = "https://www.apklis.cu/application/com.barberagenda.ji"; 
-        const linkClient = "https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/Barber%20Connect.apk";
+        <div class="stats-row" style="margin-top:1.5rem">
+          <div class="stat-card">
+            <div class="stat-card-num g">∞</div>
+            <div class="stat-card-label">Turnos sin límite</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-num g">0</div>
+            <div class="stat-card-label">Papel o libretas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-num g">24/7</div>
+            <div class="stat-card-label">Tu agenda disponible</div>
+          </div>
+        </div>
 
-        const btnBarber = document.getElementById('btn-barber');
-        const btnClient = document.getElementById('btn-client');
-        const sectionBarber = document.getElementById('barber-section');
-        const sectionClient = document.getElementById('client-section');
-        const floatingBtn = document.getElementById('floating-btn');
-        const navSuffix = document.getElementById('nav-suffix');
-        const blobBarber = document.getElementById('blob-barber');
-        const blobClient = document.getElementById('blob-client');
+        <div class="download-btns" style="justify-content:flex-start;margin-top:1.5rem">
+          <a href="https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/BarberStudio.apk" class="dl-btn primary-g">
+            <i class="fa-solid fa-download"></i> Descargar APK
+          </a>
+          <a href="https://gestion-de-negocio.github.io/gestion-barberia/" target="_blank" class="dl-btn ghost-g">
+            <i class="fa-solid fa-display"></i> Versión Web PC
+          </a>
+        </div>
+      </div>
 
-        function setMode(mode) {
-            if (mode === 'barber') {
-                btnBarber.classList.add('shadow-[0_20px_40px_rgba(0,255,136,0.2)]', 'border-barber');
-                btnBarber.classList.remove('border-barber/30');
-                btnBarber.querySelector('.absolute.inset-0.bg-barber\\/10').classList.add('bg-barber/20');
+      <!-- PHONE MOCKUP BARBER -->
+      <div class="phone-wrap">
+        <div class="phone front g-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="bs-header">
+              <span class="bs-header-title">CIERRE DEL DÍA</span>
+              <span style="font-size:.4rem;color:var(--muted)">Viernes 16 Mayo</span>
+            </div>
+            <div class="bs-stat-row">
+              <div class="bs-stat">
+                <div class="bs-stat-val">$8,500</div>
+                <div class="bs-stat-label">GANADO</div>
+              </div>
+              <div class="bs-stat">
+                <div class="bs-stat-val">12</div>
+                <div class="bs-stat-label">CLIENTES</div>
+              </div>
+            </div>
+            <div class="bs-bar-section">
+              <div class="bs-bar-label">META MENSUAL · $80,000</div>
+              <div class="bs-bar">
+                <div class="bs-bar-fill" style="--w:68%"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:.3rem">
+                <span style="font-size:.4rem;color:var(--g)">$54,400</span>
+                <span style="font-size:.4rem;color:var(--muted)">68%</span>
+              </div>
+            </div>
+            <div class="bs-turno">
+              <div class="bs-turno-dot"></div>
+              <div class="bs-turno-info">
+                <div class="bs-turno-name">Carlos Mendoza</div>
+                <div class="bs-turno-time">3:00 PM · Corte + Barba</div>
+              </div>
+              <div class="bs-turno-price">$700</div>
+            </div>
+            <div class="bs-turno">
+              <div class="bs-turno-dot" style="background:#8855ff;box-shadow:0 0 6px #8855ff"></div>
+              <div class="bs-turno-info">
+                <div class="bs-turno-name">Ingreso Extra</div>
+                <div class="bs-turno-time">Propina de cliente</div>
+              </div>
+              <div class="bs-turno-price" style="color:#8855ff">$200</div>
+            </div>
+            <div class="bs-bar-section">
+              <div class="bs-bar-label">PRÓXIMO TURNO</div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:.5rem;color:#fff;font-weight:700">Luis García · 4:30 PM</span>
+                <span style="font-size:.38rem;background:rgba(0,255,136,.15);color:var(--g);padding:.15rem .4rem;border-radius:4px;font-weight:700">EN 1h 30m</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phone back g-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="bs-header">
+              <span class="bs-header-title">FINANZAS</span>
+              <span style="font-size:.4rem;color:var(--muted)">ESTA SEMANA</span>
+            </div>
+            <div style="text-align:center;padding:.5rem 0">
+              <div style="font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;color:#fff">$42,100</div>
+              <div style="font-size:.4rem;color:var(--muted);letter-spacing:.1em;margin-top:.1rem">TOTAL SEMANA</div>
+            </div>
+            <div class="finance-bars" style="height:55px;margin:.5rem 0">
+              <div class="finance-bar" style="height:40%"><span class="finance-bar-label">L</span></div>
+              <div class="finance-bar" style="height:70%"><span class="finance-bar-label">M</span></div>
+              <div class="finance-bar" style="height:50%"><span class="finance-bar-label">Mi</span></div>
+              <div class="finance-bar" style="height:85%"><span class="finance-bar-label">J</span></div>
+              <div class="finance-bar today" style="height:100%"><span class="finance-bar-label" style="color:var(--g)">V</span></div>
+              <div class="finance-bar" style="height:25%"><span class="finance-bar-label">S</span></div>
+              <div class="finance-bar" style="height:15%"><span class="finance-bar-label">D</span></div>
+            </div>
+            <div class="bs-stat-row">
+              <div class="bs-stat">
+                <div class="bs-stat-val" style="font-size:.7rem">47</div>
+                <div class="bs-stat-label">CORTES</div>
+              </div>
+              <div class="bs-stat" style="background:rgba(136,85,255,.06);border-color:rgba(136,85,255,.12)">
+                <div class="bs-stat-val" style="color:#8855ff;font-size:.7rem">8</div>
+                <div class="bs-stat-label">EXTRAS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                btnClient.classList.remove('shadow-[0_20px_40px_rgba(0,210,255,0.2)]', 'border-client');
-                btnClient.classList.add('border-client/30');
-                btnClient.querySelector('.absolute.inset-0.bg-client\\/10').classList.remove('bg-client/20');
+  <!-- FEATURES GRID -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-star"></i> FUNCIONES PRINCIPALES</div>
+    <h2 class="section-title">Todo lo que necesitas,<br>en una sola app.</h2>
 
-                sectionClient.classList.add('hidden', 'hidden-content');
-                sectionClient.classList.remove('visible-content');
+    <div class="features-grid">
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-calendar-check"></i></div>
+        <div class="feature-title">Agenda Blindada Offline</div>
+        <div class="feature-desc">Base de datos SQLite en tu teléfono. Si se cae ETECSA, sigues agendando, cobrando y viendo todo. Al conectarte, sube todo a la nube automáticamente.</div>
+      </div>
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-bolt"></i></div>
+        <div class="feature-title">Turno Rápido en 2 Segundos</div>
+        <div class="feature-desc">Botón flotante siempre visible. Entra el nombre, la hora y el precio — listo. Agrega clientes sin cita en el acto sin perder tiempo buscando menús.</div>
+      </div>
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div class="feature-title">Control Financiero Completo</div>
+        <div class="feature-desc">Cierre de caja automático a las 11:59 PM. Gráficas de barras y distribución. Vista por día, semana, mes y global. Meta mensual con barra de progreso.</div>
+      </div>
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-bell"></i></div>
+        <div class="feature-title">Alarmas Exactas</div>
+        <div class="feature-desc">Notificaciones que suenan aunque no tengas megas ni Wi-Fi. El sistema de alarmas de Android guarda cada aviso en el dispositivo. Cero olvidos de turnos.</div>
+      </div>
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-users"></i></div>
+        <div class="feature-title">Expediente de Clientes</div>
+        <div class="feature-desc">Historial completo de cada cliente: fechas de visita, total gastado, servicios realizados. Construyes tu cartera de clientes de forma profesional.</div>
+      </div>
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-fingerprint"></i></div>
+        <div class="feature-title">Seguridad por Hardware</div>
+        <div class="feature-desc">Tu cuenta se vincula al ID físico de tu teléfono. Nadie puede entrar desde otro dispositivo aunque tenga tu contraseña. Anti-robo real.</div>
+      </div>
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-shop"></i></div>
+        <div class="feature-title">Gestión de Salón</div>
+        <div class="feature-desc">Si eres dueño de local, controlas a todo tu equipo desde la app o desde la versión web en PC. Finanzas, barberos, disponibilidad y cierres en tiempo real.</div>
+      </div>
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-box"></i></div>
+        <div class="feature-title">Inventario de Productos</div>
+        <div class="feature-desc">Lleva control de pomadas, ceras, shampoos y todo lo que vendes o usas. Stock, precios y alertas cuando se agota. Tu almacén en digital.</div>
+      </div>
+      <div class="feature-card g">
+        <div class="feature-icon g"><i class="fa-solid fa-comments"></i></div>
+        <div class="feature-title">Comunidad de Barberos</div>
+        <div class="feature-desc">Chat exclusivo entre barberos dentro de la app. Comparte técnicas, experiencias y noticias del gremio. Solo para barberos activos del ecosistema.</div>
+      </div>
+    </div>
+  </div>
 
-                sectionBarber.classList.remove('hidden', 'hidden-content');
-                sectionBarber.classList.add('visible-content');
+  <!-- XP / NIVEL SYSTEM -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-trophy"></i> SISTEMA DE PROGRESO</div>
+    <h2 class="section-title">Sube de nivel mientras<br>trabajas.</h2>
+    <p class="section-desc">Cada cliente que atiendes te da XP. Cuanto más crezcas, más alto llegas.</p>
 
-                floatingBtn.classList.remove('bg-client', 'shadow-[0_0_30px_rgba(0,210,255,0.6)]');
-                floatingBtn.classList.add('bg-barber', 'text-dark', 'shadow-[0_0_30px_rgba(0,255,136,0.6)]');
-                floatingBtn.href = linkBarber;
+    <div class="xp-section">
+      <div class="xp-badge">
+        <div class="xp-badge-lvl">LVL</div>
+        <div class="xp-badge-num">4</div>
+      </div>
+      <div>
+        <div class="xp-info-title">MASTER BARBER</div>
+        <div class="xp-info-sub">800 / 1000 XP · Tu ranking sube con cada cliente</div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar-fill" style="--w:80%"></div>
+        </div>
+        <div class="xp-levels">
+          <div class="xp-level-chip active">LVL 1</div>
+          <div class="xp-level-chip active">LVL 2</div>
+          <div class="xp-level-chip active">LVL 3</div>
+          <div class="xp-level-chip active">LVL 4</div>
+          <div class="xp-level-chip">LVL 5 🏆</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                navSuffix.innerText = "ECOSYSTEM"; 
-                navSuffix.classList.remove('text-client', 'text-glow-client');
-                navSuffix.classList.add('text-barber', 'text-glow-barber');
+  <!-- RADAR ACTIVO / MODO FANTASMA -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-satellite-dish"></i> PRESENCIA EN EL MAPA</div>
+    <h2 class="section-title">Controlas cuándo<br>te ven los clientes.</h2>
 
-                blobBarber.classList.remove('opacity-0');
-                blobClient.classList.add('opacity-0');
+    <div class="radar-section">
+      <div class="radar-visual">
+        <div class="radar-circle c1"></div>
+        <div class="radar-circle c2"></div>
+        <div class="radar-circle c3"></div>
+        <div class="radar-circle c4"></div>
+        <div class="radar-sweep"></div>
+        <div class="radar-dot d1"></div>
+        <div class="radar-dot d2"></div>
+        <div class="radar-dot d3"></div>
+      </div>
+      <div>
+        <div class="radar-info-title">
+          <span class="live-dot"></span>
+          RADAR ACTIVO
+        </div>
+        <div class="radar-info-desc">Cuando activas el radar, tu pin aparece en el mapa de Barber Connect. Los clientes cercanos te ven, ven tus trabajos y pueden agendarte. Cuando lo desactivas entras en Modo Fantasma — invisible para todos.</div>
+        <div class="radar-modes">
+          <div class="radar-mode on"><i class="fa-solid fa-eye"></i> RADAR ACTIVO · Visible en el mapa</div>
+          <div class="radar-mode off"><i class="fa-solid fa-eye-slash"></i> MODO FANTASMA · Invisible</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            } else {
-                btnClient.classList.add('shadow-[0_20px_40px_rgba(0,210,255,0.2)]', 'border-client');
-                btnClient.classList.remove('border-client/30');
-                btnClient.querySelector('.absolute.inset-0.bg-client\\/10').classList.add('bg-client/20');
+  <!-- PERFIL EN CONNECT -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-id-card"></i> TU PERFIL PARA CLIENTES</div>
+    <h2 class="section-title">Configura tu vitrina<br>para el mundo.</h2>
+    <p class="section-desc">Desde tu app, controlas todo lo que los clientes ven en Barber Connect.</p>
 
-                btnBarber.classList.remove('shadow-[0_20px_40px_rgba(0,255,136,0.2)]', 'border-barber');
-                btnBarber.classList.add('border-barber/30');
-                btnBarber.querySelector('.absolute.inset-0.bg-barber\\/10').classList.remove('bg-barber/20');
+    <div class="catalog-preview" style="max-width:360px;margin:1.5rem 0">
+      <div class="catalog-item g">
+        <i class="fa-solid fa-images"></i>
+        CATÁLOGO
+      </div>
+      <div class="catalog-item g">
+        <i class="fa-solid fa-tags"></i>
+        PRECIOS
+      </div>
+      <div class="catalog-item g">
+        <i class="fa-solid fa-clock"></i>
+        HORARIOS
+      </div>
+      <div class="catalog-item g">
+        <i class="fa-solid fa-photo-film"></i>
+        HISTORIAS
+      </div>
+      <div class="catalog-item g">
+        <i class="fa-solid fa-map-pin"></i>
+        UBICACIÓN
+      </div>
+      <div class="catalog-item g">
+        <i class="fa-solid fa-shield-halved"></i>
+        SEGURIDAD
+      </div>
+    </div>
 
-                sectionBarber.classList.add('hidden', 'hidden-content');
-                sectionBarber.classList.remove('visible-content');
+    <div class="dual-grid">
+      <div class="dual-card g">
+        <div class="dual-card-header">
+          <div class="dual-tag g">CONFIGURAS EN STUDIO</div>
+        </div>
+        <div class="dual-list">
+          <div class="dual-item"><i class="fa-solid fa-check g"></i>Fotos de tus mejores cortes en el catálogo</div>
+          <div class="dual-item"><i class="fa-solid fa-check g"></i>Lista de servicios con precio exacto</div>
+          <div class="dual-item"><i class="fa-solid fa-check g"></i>Horario por día de la semana</div>
+          <div class="dual-item"><i class="fa-solid fa-check g"></i>Tu ubicación exacta en el mapa</div>
+          <div class="dual-item"><i class="fa-solid fa-check g"></i>Historias de trabajos recientes</div>
+          <div class="dual-item"><i class="fa-solid fa-check g"></i>PIN de seguridad para tus finanzas</div>
+        </div>
+      </div>
+      <div class="dual-card b">
+        <div class="dual-card-header">
+          <div class="dual-tag b">LOS CLIENTES VEN EN CONNECT</div>
+        </div>
+        <div class="dual-list">
+          <div class="dual-item"><i class="fa-solid fa-check b"></i>Tu perfil completo con reseñas y rating</div>
+          <div class="dual-item"><i class="fa-solid fa-check b"></i>Tu galería de cortes para elegir el estilo</div>
+          <div class="dual-item"><i class="fa-solid fa-check b"></i>Si estás abierto ahora mismo</div>
+          <div class="dual-item"><i class="fa-solid fa-check b"></i>Tu pin en el mapa y la distancia</div>
+          <div class="dual-item"><i class="fa-solid fa-check b"></i>Tus historias activas</div>
+          <div class="dual-item"><i class="fa-solid fa-check b"></i>Botón directo para agendarte</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                sectionClient.classList.remove('hidden', 'hidden-content');
-                sectionClient.classList.add('visible-content');
+  <!-- PROPINAS -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-coins"></i> INGRESOS EXTRA</div>
+    <h2 class="section-title">Propinas digitales<br>que llegan solas.</h2>
 
-                floatingBtn.classList.remove('bg-barber', 'text-dark', 'shadow-[0_0_30px_rgba(0,255,136,0.6)]');
-                floatingBtn.classList.add('bg-client', 'text-dark', 'shadow-[0_0_30px_rgba(0,210,255,0.6)]');
-                floatingBtn.href = linkClient;
+    <div class="highlight-box">
+      <i class="fa-solid fa-money-bill-wave highlight-icon"></i>
+      <div>
+        <div class="highlight-title">Propinas automáticas post-turno</div>
+        <div class="highlight-desc">Al terminar un corte, el cliente recibe automáticamente un aviso en Barber Connect para dejar propina. El barbero no tiene que pedir nada. La propina cae directo en tu pantalla de finanzas como ingreso registrado.</div>
+      </div>
+    </div>
 
-                navSuffix.innerText = "CONNECT";
-                navSuffix.classList.remove('text-barber', 'text-glow-barber');
-                navSuffix.classList.add('text-client', 'text-glow-client');
+    <div class="highlight-box" style="border-color:rgba(136,85,255,.15)">
+      <i class="fa-solid fa-plus-circle highlight-icon" style="color:#8855ff"></i>
+      <div>
+        <div class="highlight-title">Ingresos Extra Manuales</div>
+        <div class="highlight-desc">Registra cualquier ganancia que no sea un turno — servicios especiales, ventas de productos, trabajos a domicilio. Aparece en tus finanzas con fecha, hora y razón. Todo queda guardado.</div>
+      </div>
+    </div>
+  </div>
 
-                blobBarber.classList.add('opacity-0');
-                blobClient.classList.remove('opacity-0');
-            }
-        }
+  <!-- FINANZAS DEMO -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-chart-line"></i> FINANZAS</div>
+    <h2 class="section-title">Tu caja cuadra sola<br>al final del día.</h2>
 
-        floatingBtn.href = linkBarber;
-        document.querySelectorAll('a[href="#descargar-barbero"]').forEach(el => el.href = linkBarber);
-        document.querySelectorAll('a[href="#descargar-cliente"]').forEach(el => el.href = linkClient);
-        document.getElementById('blob-client').classList.add('opacity-0');
-        document.getElementById('blob-barber').classList.add('transition', 'duration-1000');
-        document.getElementById('blob-client').classList.add('transition', 'duration-1000');
-        setMode('barber');
+    <div class="finance-display">
+      <div class="finance-total">
+        <div class="finance-total-label">TOTAL HOY</div>
+        <div class="finance-total-num">$<span class="g">8,500</span></div>
+      </div>
+      <div class="finance-period-tabs">
+        <div class="finance-tab active">DÍA</div>
+        <div class="finance-tab">SEMANA</div>
+        <div class="finance-tab">MES</div>
+        <div class="finance-tab">GLOBAL</div>
+      </div>
+      <div class="finance-bars">
+        <div class="finance-bar" style="height:45%"><span class="finance-bar-label">L</span></div>
+        <div class="finance-bar" style="height:72%"><span class="finance-bar-label">M</span></div>
+        <div class="finance-bar" style="height:55%"><span class="finance-bar-label">Mi</span></div>
+        <div class="finance-bar" style="height:88%"><span class="finance-bar-label">J</span></div>
+        <div class="finance-bar today" style="height:100%"><span class="finance-bar-label" style="color:var(--g)">V</span></div>
+        <div class="finance-bar" style="height:30%"><span class="finance-bar-label">S</span></div>
+        <div class="finance-bar" style="height:18%"><span class="finance-bar-label">D</span></div>
+      </div>
+    </div>
 
-        window.addEventListener('load', function() {
-            const preloader = document.getElementById('preloader');
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 700);
-            }, 500);
-        });
-    </script>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card-num g">12</div>
+        <div class="stat-card-label">Turnos hoy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num g">3</div>
+        <div class="stat-card-label">Extras hoy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num g">$708</div>
+        <div class="stat-card-label">Promedio corte</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-num g">68%</div>
+        <div class="stat-card-label">Meta del mes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIONES DEMO -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-bell"></i> ALARMAS Y NOTIFICACIONES</div>
+    <h2 class="section-title">Te avisamos aunque<br>no tengas megas.</h2>
+
+    <div style="display:flex;flex-direction:column;gap:1rem;max-width:400px">
+      <div class="notif-demo">
+        <div class="notif-icon"><i class="fa-solid fa-scissors"></i></div>
+        <div>
+          <div class="notif-title">Turno en 30 minutos</div>
+          <div class="notif-sub">Carlos Mendoza · 3:00 PM · $700</div>
+        </div>
+      </div>
+      <div class="notif-demo" style="animation-delay:1.5s;border-color:rgba(136,85,255,.2)">
+        <div class="notif-icon" style="background:rgba(136,85,255,.1);color:#8855ff"><i class="fa-solid fa-money-bill"></i></div>
+        <div>
+          <div class="notif-title">💰 Nueva propina recibida</div>
+          <div class="notif-sub">Luis te dejó $200 de propina · Revisa finanzas</div>
+        </div>
+      </div>
+      <div class="notif-demo" style="animation-delay:3s;border-color:rgba(0,210,255,.2)">
+        <div class="notif-icon" style="background:rgba(0,210,255,.1);color:var(--b)"><i class="fa-solid fa-calendar-plus"></i></div>
+        <div>
+          <div class="notif-title">Nueva solicitud de turno</div>
+          <div class="notif-sub">Miguel quiere · Mañana 10:00 AM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT COMUNIDAD -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-users"></i> COMUNIDAD Y SOPORTE</div>
+    <h2 class="section-title">No estás solo en<br>el negocio.</h2>
+
+    <div class="dual-grid">
+      <div>
+        <div class="chat-demo">
+          <div class="chat-header">
+            <div class="chat-avatar">CB</div>
+            <div>
+              <div class="chat-name">Comunidad Barberos</div>
+              <div class="chat-status"><span class="live-dot" style="width:6px;height:6px"></span> Chat activo</div>
+            </div>
+          </div>
+          <div class="chat-bubble">
+            <div class="bubble them">¿Qué precio le ponen ustedes al corte con barba?</div>
+            <div class="bubble me">Yo cobro $800 todo incluido 🔥</div>
+            <div class="bubble them">Hay algún truco para hacer el fade más limpio?</div>
+            <div class="bubble me">Sí, mañana subo un video al catálogo</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="feature-card g" style="margin:0">
+          <div class="feature-icon g"><i class="fa-solid fa-headset"></i></div>
+          <div class="feature-title">Soporte Técnico Directo</div>
+          <div class="feature-desc">Chat de soporte dentro de la app. Si algo no funciona, reportas y te respondemos. Sin buscar en Google.</div>
+        </div>
+        <div class="feature-card g" style="margin:0">
+          <div class="feature-icon g"><i class="fa-solid fa-bullhorn"></i></div>
+          <div class="feature-title">Anuncios Globales</div>
+          <div class="feature-desc">Cuando hay actualizaciones o novedades importantes, te aparece un aviso directo en tu app. Siempre informado.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TUTORIAL BARBER -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-graduation-cap"></i> CÓMO EMPEZAR</div>
+    <h2 class="section-title">Listo en menos<br>de 5 minutos.</h2>
+
+    <div class="tutorial-steps">
+      <div class="step">
+        <div class="step-num g">01</div>
+        <div class="step-content">
+          <div class="step-title">Descarga e instala la APK</div>
+          <div class="step-desc">Descarga el archivo APK desde el botón de arriba. Activa "instalar apps de fuentes desconocidas" en los ajustes de tu teléfono Android e instala normalmente.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num g">02</div>
+        <div class="step-content">
+          <div class="step-title">Registra tu número y activa la cuenta</div>
+          <div class="step-desc">Al abrir la app por primera vez, entra tu número de teléfono. Tu cuenta queda vinculada a ese teléfono por seguridad. Contacta soporte para activar tu suscripción.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num g">03</div>
+        <div class="step-content">
+          <div class="step-title">Configura tu perfil para Barber Connect</div>
+          <div class="step-desc">Desde el Perfil dentro de la app, sube fotos de tus trabajos al Catálogo, pon tus precios, configura tus horarios y activa tu ubicación en el mapa para que los clientes te encuentren.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num g">04</div>
+        <div class="step-content">
+          <div class="step-title">Activa el Radar y empieza a recibir turnos</div>
+          <div class="step-desc">Cuando estés listo para trabajar, activa el Radar desde tu perfil. Tu pin aparece en el mapa de Barber Connect y los clientes cercanos te pueden encontrar y agendar.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num g">05</div>
+        <div class="step-content">
+          <div class="step-title">Registra cada turno y ve crecer tus finanzas</div>
+          <div class="step-desc">Usa el botón de Turno Rápido para agregar clientes en 2 segundos. Cada turno registrado alimenta tus finanzas, tu gráfica semanal y tu barra de meta mensual automáticamente.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ BARBERO -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label g"><i class="fa-solid fa-circle-question"></i> PREGUNTAS FRECUENTES</div>
+    <h2 class="section-title">Dudas del<br><span style="color:var(--g)">Barbero</span>.</h2>
+
+    <div class="faq-wrap">
+      <div class="faq-item g">
+        <details>
+          <summary>¿Funciona si se cae el internet o no tengo datos?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Sí, al 100%. Barber Studio guarda todo en una base de datos local dentro de tu teléfono (SQLite). Puedes agendar, cobrar, ver finanzas e historial de clientes sin tener ni un mega de datos. Cuando te conectes de nuevo, la app sincroniza todo automáticamente con la nube.</p>
+        </details>
+      </div>
+      <div class="faq-item g">
+        <details>
+          <summary>¿Qué pasa si cambio de teléfono?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Debes contactar al Soporte por WhatsApp o desde el chat dentro de la app para que te liberen el ID del teléfono viejo. Una vez liberado, instalas la app en el teléfono nuevo, entras con tu número y todos tus datos (clientes, turnos, finanzas) bajan desde la nube automáticamente.</p>
+        </details>
+      </div>
+      <div class="faq-item g">
+        <details>
+          <summary>¿Las alarmas suenan aunque no tenga internet?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Sí. Las alarmas usan el sistema de Alarmas Exactas de Android que se guardan directamente en el dispositivo. Aunque no tengas wi-fi, datos o señal, tu teléfono te avisará del próximo turno a la hora exacta que programaste.</p>
+        </details>
+      </div>
+      <div class="faq-item g">
+        <details>
+          <summary>¿Cómo agendo a alguien que no tiene Barber Connect?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Con el Turno Rápido. Es el botón flotante verde siempre visible en tu pantalla principal. Pones nombre, hora y precio — el turno queda en tu agenda en 2 segundos como turno manual. No necesitas que el cliente tenga ninguna app.</p>
+        </details>
+      </div>
+      <div class="faq-item g">
+        <details>
+          <summary>¿Cómo funciona el Cierre del Día?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>La app suma automáticamente todos los turnos completados y los ingresos extra del día. A las 11:59 PM genera un reporte que se guarda en tu historial financiero. No tienes que hacer ningún cálculo a mano. Tu caja cuadra sola.</p>
+        </details>
+      </div>
+      <div class="faq-item g">
+        <details>
+          <summary>¿Puedo ver las finanzas de todo mi salón si tengo empleados?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Sí. Con el modo Gestión de Salón, tienes una pantalla que muestra los turnos y finanzas de todos los barberos de tu local en tiempo real. También puedes gestionar todo desde la versión web en PC sin descargar nada extra.</p>
+        </details>
+      </div>
+      <div class="faq-item g">
+        <details>
+          <summary>¿Qué es el Modo Privacidad de Finanzas?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Un botón en la pantalla de finanzas que oculta todos los números con ••••. Útil cuando hay alguien mirando y no quieres que vean tus ganancias. Se activa y desactiva con un toque.</p>
+        </details>
+      </div>
+      <div class="faq-item g">
+        <details>
+          <summary>¿Cuánto cuesta la aplicación?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Barber Studio es una herramienta profesional premium con suscripción mensual. Contacta a Soporte por WhatsApp para conocer el plan activo y activar tu acceso.</p>
+        </details>
+      </div>
+      <div class="faq-item g">
+        <details>
+          <summary>¿Cómo accedo desde PC?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Sin descargar nada. Entra al link de Gestión Web desde cualquier navegador en tu computadora, inicia sesión con tu mismo número de teléfono y tienes control total en pantalla grande — agenda, clientes, finanzas y ajustes del salón.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD CTA BARBER -->
+  <div class="section" style="padding-top:0">
+    <div class="download-section g">
+      <div class="section-label g" style="margin:0 auto 1rem"><i class="fa-solid fa-download"></i> DESCARGA YA</div>
+      <h2 class="section-title">Empieza hoy.<br>Tu primera semana cambia todo.</h2>
+      <p class="section-desc" style="margin:0 auto">Disponible para Android. Versión web para PC incluida.</p>
+      <div class="download-btns">
+        <a href="https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/BarberStudio.apk" class="dl-btn primary-g">
+          <i class="fa-brands fa-android"></i> Descargar APK Android
+        </a>
+        <a href="https://gestion-de-negocio.github.io/gestion-barberia/" target="_blank" class="dl-btn ghost-g">
+          <i class="fa-solid fa-display"></i> Abrir Gestión Web
+        </a>
+        <a href="https://wa.me/+5351881471" target="_blank" class="dl-btn ghost-g">
+          <i class="fa-brands fa-whatsapp"></i> Soporte
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- END BARBER SECTION -->
+
+
+<!-- ═══════════════════════════════════════════════════
+     BARBER CONNECT SECTION
+══════════════════════════════════════════════════════ -->
+<div id="client-section" style="display:none">
+
+  <!-- APP HERO CONNECT -->
+  <div class="section">
+    <div class="app-hero">
+      <div>
+        <div class="section-label b">
+          <i class="fa-solid fa-compass"></i>
+          BARBER CONNECT APP
+        </div>
+        <h2 class="section-title">Tu estilo,<br>sin <span style="color:var(--b)">esperas</span>.</h2>
+        <p class="section-desc">Encuentra los mejores barberos cerca de ti, ve sus trabajos, lee reseñas reales y agenda en segundos. Sin llamar, sin aparecer y esperar.</p>
+
+        <div class="web-badge">
+          <i class="fa-solid fa-globe"></i>
+          También disponible en Web — funciona en iPhone y PC sin descargar nada
+        </div>
+
+        <div class="stats-row" style="margin-top:1rem">
+          <div class="stat-card">
+            <div class="stat-card-num b">0</div>
+            <div class="stat-card-label">Costo para el cliente</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-num b">GPS</div>
+            <div class="stat-card-label">Barberos cerca de ti</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-num b">⭐</div>
+            <div class="stat-card-label">Reseñas reales</div>
+          </div>
+        </div>
+
+        <div class="download-btns" style="justify-content:flex-start;margin-top:1.5rem">
+          <a href="https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/Barber%20Connect.apk" class="dl-btn primary-b">
+            <i class="fa-solid fa-download"></i> Descargar APK
+          </a>
+          <a href="https://barber-connect-versionweb.github.io/Barber-connect/" target="_blank" class="dl-btn ghost-b">
+            <i class="fa-solid fa-globe"></i> Ir a la Web
+          </a>
+        </div>
+      </div>
+
+      <!-- PHONE MOCKUP CONNECT -->
+      <div class="phone-wrap">
+        <div class="phone front b-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="bc-header">
+              <i class="fa-solid fa-compass bc-header-icon"></i>
+              <span class="bc-header-text">BARBER CONNECT</span>
+            </div>
+            <div class="bc-map" style="min-height:130px">
+              <div class="bc-map-grid"></div>
+              <div style="position:relative;height:130px">
+                <div class="bc-pin p1"></div>
+                <div class="bc-pin p2"></div>
+                <div class="bc-pin p3" style="animation-delay:.7s"></div>
+                <div style="position:absolute;top:50%;left:48%;transform:translate(-50%,-50%)">
+                  <div style="width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--b);box-shadow:0 0 12px var(--b)"></div>
+                </div>
+              </div>
+            </div>
+            <div class="bc-barber-card">
+              <div class="bc-avatar">JR</div>
+              <div class="bc-barber-info">
+                <div class="bc-barber-name">Juan Ramírez</div>
+                <div class="bc-stars">★★★★★</div>
+              </div>
+              <div class="bc-badge">ABIERTO</div>
+            </div>
+            <div class="bc-barber-card">
+              <div class="bc-avatar" style="background:linear-gradient(135deg,#8855ff,#5522cc)">CM</div>
+              <div class="bc-barber-info">
+                <div class="bc-barber-name">Carlos Mesa</div>
+                <div class="bc-stars">★★★★☆</div>
+              </div>
+              <div class="bc-badge" style="background:rgba(255,193,7,.15);color:#ffc107">TOP</div>
+            </div>
+          </div>
+        </div>
+        <div class="phone back b-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="bc-header" style="background:rgba(136,85,255,.06);border-color:rgba(136,85,255,.15)">
+              <i class="fa-solid fa-user-circle" style="color:#8855ff;font-size:.5rem"></i>
+              <span class="bc-header-text" style="color:#8855ff">PERFIL DEL BARBERO</span>
+            </div>
+            <div style="text-align:center;padding:.4rem 0">
+              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--b),#0055cc);margin:0 auto .3rem;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#fff">JR</div>
+              <div style="font-size:.5rem;font-weight:700;color:#fff">Juan Ramírez</div>
+              <div style="font-size:.38rem;color:var(--muted)">La Habana · 0.8 km</div>
+              <div style="color:#ffc107;font-size:.4rem;margin:.2rem 0">★★★★★</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.3rem;margin:.3rem 0">
+              <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.1);border-radius:7px;padding:.35rem;text-align:center">
+                <div style="font-size:.6rem;font-weight:700;color:var(--b)">248</div>
+                <div style="font-size:.35rem;color:var(--muted)">CORTES</div>
+              </div>
+              <div style="background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.1);border-radius:7px;padding:.35rem;text-align:center">
+                <div style="font-size:.6rem;font-weight:700;color:var(--g)">4.9</div>
+                <div style="font-size:.35rem;color:var(--muted)">RATING</div>
+              </div>
+              <div style="background:rgba(255,193,7,.06);border:1px solid rgba(255,193,7,.1);border-radius:7px;padding:.35rem;text-align:center">
+                <div style="font-size:.6rem;font-weight:700;color:#ffc107">#2</div>
+                <div style="font-size:.35rem;color:var(--muted)">RANKING</div>
+              </div>
+            </div>
+            <div style="background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.2);border-radius:8px;padding:.4rem;text-align:center">
+              <div style="font-size:.45rem;font-weight:700;color:var(--b)">RESERVAR TURNO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES CONNECT -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label b"><i class="fa-solid fa-star"></i> FUNCIONES PARA EL CLIENTE</div>
+    <h2 class="section-title">Todo lo que necesitas<br>para elegir al mejor.</h2>
+
+    <div class="features-grid">
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-map-location-dot"></i></div>
+        <div class="feature-title">Mapa en Vivo con GPS</div>
+        <div class="feature-desc">Activa tu ubicación y ve todos los barberos disponibles cerca de ti en el mapa. Toca un pin para ver su perfil completo, fotos de trabajos y reseñas antes de reservar.</div>
+      </div>
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-calendar-plus"></i></div>
+        <div class="feature-title">Reserva en Segundos</div>
+        <div class="feature-desc">Elige día, hora y servicio desde el perfil del barbero. Envías la solicitud y recibes confirmación al instante. El barbero sabe que vas. Sin llamadas, sin mensajes.</div>
+      </div>
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-star"></i></div>
+        <div class="feature-title">Reseñas y Rating Real</div>
+        <div class="feature-desc">Después de cada corte puedes calificar y dejar tu reseña. El rating del barbero se basa en experiencias reales de clientes como tú. Siempre sabes qué esperar antes de ir.</div>
+      </div>
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-coins"></i></div>
+        <div class="feature-title">Propinas Digitales</div>
+        <div class="feature-desc">Al terminar el corte te aparece una pantalla para dejar propina al barbero si quedaste satisfecho. Rápido, sin efectivo, directo desde tu teléfono.</div>
+      </div>
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-heart"></i></div>
+        <div class="feature-title">Barberos Favoritos</div>
+        <div class="feature-desc">Marca a tu barbero de confianza como favorito y accede a su perfil rápido sin buscarlo. Tu lista de favoritos siempre visible para agendar en segundos.</div>
+      </div>
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-message"></i></div>
+        <div class="feature-title">Chat con el Barbero</div>
+        <div class="feature-desc">Chat directo con el barbero antes y durante el turno. Avísale si llegas tarde, pregunta algo sobre el servicio o coordina detalles. Sin salir de la app.</div>
+      </div>
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-photo-film"></i></div>
+        <div class="feature-title">Historias de Trabajos</div>
+        <div class="feature-desc">Los barberos publican sus cortes más recientes en historias. Verlas antes de reservar te da una idea real de su estilo y calidad actual.</div>
+      </div>
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-bell"></i></div>
+        <div class="feature-title">Notificaciones en Tiempo Real</div>
+        <div class="feature-desc">El turno aceptado te llega al instante. Si el barbero cancela, te avisa inmediatamente. Recordatorio automático una hora antes de tu cita.</div>
+      </div>
+      <div class="feature-card b">
+        <div class="feature-icon b"><i class="fa-solid fa-sliders"></i></div>
+        <div class="feature-title">Filtros Inteligentes</div>
+        <div class="feature-desc">Filtra por barberos cercanos, abiertos ahora mismo o nuevos en la plataforma. Encuentra exactamente lo que buscas sin perder tiempo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAPA FULL DEMO -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label b"><i class="fa-solid fa-map"></i> EL MAPA</div>
+    <h2 class="section-title">Tu ciudad llena<br>de barberos.</h2>
+    <p class="section-desc">Cada pin es un barbero disponible con perfil completo, precio y reseñas.</p>
+
+    <div class="map-full-demo">
+      <div class="map-full-grid"></div>
+      <div class="map-full-pins">
+        <div class="map-full-pin" style="top:10%;left:15%">
+          <div class="map-pin-dot g"></div>
+          <div class="map-pin-label">Juan · ★4.9</div>
+        </div>
+        <div class="map-full-pin" style="top:25%;left:55%">
+          <div class="map-pin-dot b"></div>
+          <div class="map-pin-label">Carlos · ★4.7</div>
+        </div>
+        <div class="map-full-pin" style="top:55%;left:25%">
+          <div class="map-pin-dot y"></div>
+          <div class="map-pin-label">Miguel · ★4.5</div>
+        </div>
+        <div class="map-full-pin" style="top:65%;left:70%">
+          <div class="map-pin-dot g"></div>
+          <div class="map-pin-label">Luis · ★5.0</div>
+        </div>
+        <div class="map-full-pin" style="top:35%;left:80%">
+          <div class="map-pin-dot b"></div>
+          <div class="map-pin-label">Pedro · ★4.8</div>
+        </div>
+        <div class="map-user">
+          <div style="position:relative;display:flex;align-items:center;justify-content:center;width:20px;height:20px">
+            <div class="map-user-dot"></div>
+            <div class="map-user-ring"></div>
+          </div>
+          <div class="map-pin-label" style="margin-top:.3rem">Tú</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BARBER CARDS PREVIEW -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label b"><i class="fa-solid fa-id-card"></i> PERFILES DE BARBEROS</div>
+    <h2 class="section-title">Conoce al barbero<br>antes de ir.</h2>
+
+    <div class="barber-cards-preview">
+      <div class="barber-preview-card">
+        <div class="bp-header">
+          <div class="bp-avatar" style="background:linear-gradient(135deg,var(--g),var(--gd))">JR</div>
+          <div>
+            <div class="bp-name">Juan Ramírez</div>
+            <div class="bp-location"><i class="fa-solid fa-map-pin" style="font-size:.6rem"></i> La Habana · 0.8km</div>
+          </div>
+        </div>
+        <div class="bp-stars">★★★★★ <span style="color:var(--muted);font-size:.7rem">4.9 (124 reseñas)</span></div>
+        <div class="bp-tags">
+          <div class="bp-tag avail">ABIERTO</div>
+          <div class="bp-tag near">CERCA</div>
+          <div class="bp-tag rating">TOP BARBERO</div>
+        </div>
+      </div>
+      <div class="barber-preview-card">
+        <div class="bp-header">
+          <div class="bp-avatar" style="background:linear-gradient(135deg,var(--b),var(--bd))">CM</div>
+          <div>
+            <div class="bp-name">Carlos Mesa</div>
+            <div class="bp-location"><i class="fa-solid fa-map-pin" style="font-size:.6rem"></i> Santiago · 1.2km</div>
+          </div>
+        </div>
+        <div class="bp-stars">★★★★☆ <span style="color:var(--muted);font-size:.7rem">4.7 (89 reseñas)</span></div>
+        <div class="bp-tags">
+          <div class="bp-tag avail">ABIERTO</div>
+          <div class="bp-tag rating">VERIFICADO</div>
+        </div>
+      </div>
+      <div class="barber-preview-card">
+        <div class="bp-header">
+          <div class="bp-avatar" style="background:linear-gradient(135deg,#8855ff,#5522cc)">LG</div>
+          <div>
+            <div class="bp-name">Luis González</div>
+            <div class="bp-location"><i class="fa-solid fa-map-pin" style="font-size:.6rem"></i> Holguín · 0.3km</div>
+          </div>
+        </div>
+        <div class="bp-stars">★★★★★ <span style="color:var(--muted);font-size:.7rem">5.0 (201 reseñas)</span></div>
+        <div class="bp-tags">
+          <div class="bp-tag avail">ABIERTO</div>
+          <div class="bp-tag near">MUY CERCA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROPINA CONNECT -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label b"><i class="fa-solid fa-coins"></i> PROPINAS Y RESERVAS</div>
+    <h2 class="section-title">Cada acción tuya<br>llega al instante.</h2>
+
+    <div class="dual-grid">
+      <div class="highlight-box" style="flex-direction:column;border-color:rgba(0,210,255,.15)">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+          <i class="fa-solid fa-coins highlight-icon" style="color:var(--b)"></i>
+          <div class="highlight-title" style="margin:0">Propina en un toque</div>
+        </div>
+        <div class="highlight-desc">Al terminar tu corte te aparece una pantalla directamente en Barber Connect. Elige el monto y confirma. La propina llega al barbero al instante como notificación y queda registrada en sus finanzas.</div>
+      </div>
+      <div class="highlight-box" style="flex-direction:column;border-color:rgba(0,210,255,.15)">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+          <i class="fa-solid fa-calendar-check highlight-icon" style="color:var(--b)"></i>
+          <div class="highlight-title" style="margin:0">Reserva confirmada al instante</div>
+        </div>
+        <div class="highlight-desc">Envías tu solicitud de turno y el barbero la recibe en su app de Studio. Cuando la acepta, tu turno cambia a verde y recibes notificación inmediata. También puedes cancelar si no puedes ir y el barbero se entera al momento.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TUTORIAL CONNECT -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label b"><i class="fa-solid fa-graduation-cap"></i> CÓMO FUNCIONA</div>
+    <h2 class="section-title">Tu primer turno<br>en 3 pasos.</h2>
+
+    <div class="tutorial-steps">
+      <div class="step">
+        <div class="step-num b">01</div>
+        <div class="step-content">
+          <div class="step-title">Descarga e instala — o entra desde la web</div>
+          <div class="step-desc">Descarga la APK en Android o entra directamente desde el navegador en iPhone o PC. Barber Connect también tiene versión web completa en barber-connect-versionweb.github.io/Barber-connect/</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num b">02</div>
+        <div class="step-content">
+          <div class="step-title">Encuentra tu barbero en el mapa o búscalo</div>
+          <div class="step-desc">Activa el GPS para ver barberos en el mapa cerca de ti. O busca directamente por nombre o número sin activar ubicación. Toca cualquier perfil para ver su galería, precios y reseñas reales.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num b">03</div>
+        <div class="step-content">
+          <div class="step-title">Elige el servicio, el día y la hora — y listo</div>
+          <div class="step-desc">Desde el perfil del barbero, selecciona el servicio que quieres, el día disponible y la hora. Confirmas y el barbero recibe la solicitud. Cuando la acepta, tu turno queda agendado y recibes un aviso al instante.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ CLIENTE -->
+  <div class="section" style="padding-top:0">
+    <div class="section-label b"><i class="fa-solid fa-circle-question"></i> PREGUNTAS FRECUENTES</div>
+    <h2 class="section-title">Dudas del<br><span style="color:var(--b)">Cliente</span>.</h2>
+
+    <div class="faq-wrap">
+      <div class="faq-item b">
+        <details>
+          <summary>¿Barber Connect tiene costo para mí?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>No. Barber Connect es completamente gratuita para todos los clientes. Descárgate la app, crea tu cuenta y empieza a buscar y agendar sin pagar nada.</p>
+        </details>
+      </div>
+      <div class="faq-item b">
+        <details>
+          <summary>¿Cómo sé si el barbero aceptó mi cita?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Te llega una notificación push al instante cuando el barbero acepta. Además, en la sección Mis Reservas dentro de la app, el turno cambia de color naranja (pendiente) a verde (confirmado).</p>
+        </details>
+      </div>
+      <div class="faq-item b">
+        <details>
+          <summary>¿Necesito el GPS para usar la app?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Solo si quieres usar el mapa para encontrar barberos cercanos. Si ya sabes a quién quieres ir, puedes buscarlo directamente por nombre o número de teléfono sin activar el GPS.</p>
+        </details>
+      </div>
+      <div class="faq-item b">
+        <details>
+          <summary>¿Puedo cancelar un turno si no puedo ir?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Sí. En Mis Reservas tienes un botón de Cancelar. Al usarlo, el barbero recibe una notificación inmediata para que sepa que no vas y pueda liberar ese horario.</p>
+        </details>
+      </div>
+      <div class="faq-item b">
+        <details>
+          <summary>¿Me avisan si el barbero cancela?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Sí. Si el barbero tiene una emergencia y cancela tu cita, recibes una alerta inmediata en la app para que puedas buscar otro barbero o reagendar.</p>
+        </details>
+      </div>
+      <div class="faq-item b">
+        <details>
+          <summary>¿Funciona en iPhone?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>La APK es solo para Android. Pero si tienes iPhone, puedes usar Barber Connect directamente desde el navegador en la versión web — sin descargar nada. Tiene las mismas funciones.</p>
+        </details>
+      </div>
+      <div class="faq-item b">
+        <details>
+          <summary>¿Cómo dejo una propina al barbero?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Al terminar tu corte, la app te muestra automáticamente una pantalla de propina. Puedes elegir el monto y confirmar. La propina llega directo al barbero como notificación y queda registrada. Si no quieres dejar, simplemente la omites.</p>
+        </details>
+      </div>
+      <div class="faq-item b">
+        <details>
+          <summary>¿Puedo chatear con el barbero antes del turno?<div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div></summary>
+          <p>Sí. Hay un chat directo con el barbero disponible una vez que tienes un turno activo. Puedes avisarle si llegas un poco tarde, preguntar sobre el servicio o coordinar cualquier detalle.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD CTA CLIENT -->
+  <div class="section" style="padding-top:0">
+    <div class="download-section b">
+      <div class="section-label b" style="margin:0 auto 1rem"><i class="fa-solid fa-download"></i> DESCARGA GRATIS</div>
+      <h2 class="section-title">El mejor barbero<br>de tu ciudad, en tu bolsillo.</h2>
+      <p class="section-desc" style="margin:0 auto">Gratis para siempre. Android y web.</p>
+      <div class="download-btns">
+        <a href="https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/Barber%20Connect.apk" class="dl-btn primary-b">
+          <i class="fa-brands fa-android"></i> Descargar APK Android
+        </a>
+        <a href="https://barber-connect-versionweb.github.io/Barber-connect/" target="_blank" class="dl-btn ghost-b">
+          <i class="fa-solid fa-globe"></i> Abrir en Web
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- END CLIENT SECTION -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <i class="fa-solid fa-scissors"></i>
+        BARBER ECOSYSTEM
+      </div>
+      <div class="footer-desc">El ecosistema definitivo para barberos y clientes en Cuba. Gestión profesional sin papel y reservas sin llamadas.</div>
+    </div>
+    <div>
+      <div class="footer-title">Apps</div>
+      <div class="footer-links">
+        <a href="https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/BarberStudio.apk" class="footer-link">
+          <i class="fa-solid fa-download"></i> Barber Studio APK
+        </a>
+        <a href="https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/Barber%20Connect.apk" class="footer-link">
+          <i class="fa-solid fa-download"></i> Barber Connect APK
+        </a>
+        <a href="https://gestion-de-negocio.github.io/gestion-barberia/" target="_blank" class="footer-link">
+          <i class="fa-solid fa-display"></i> Gestión Web PC
+        </a>
+        <a href="https://barber-connect-versionweb.github.io/Barber-connect/" target="_blank" class="footer-link">
+          <i class="fa-solid fa-globe"></i> Connect Web
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-title">Soporte</div>
+      <div class="footer-links">
+        <a href="https://wa.me/+5351881471" class="footer-link" target="_blank">
+          <i class="fa-brands fa-whatsapp"></i> WhatsApp Soporte
+        </a>
+        <a href="https://www.facebook.com/share/1874X9LGAy/" target="_blank" class="footer-link">
+          <i class="fa-brands fa-facebook"></i> Facebook
+        </a>
+        <a href="#" class="footer-link">
+          <i class="fa-solid fa-shield-halved"></i> Privacidad
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 <span>Barber Ecosystem</span> · Desarrollado en Cuba 🇨🇺</div>
+    <div class="footer-copy">Desarrollado con <i class="fa-solid fa-bolt" style="color:#ffc107"></i> en Cuba</div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="float-wrap">
+  <div class="float-item">
+    <a href="https://wa.me/+5351881471" target="_blank" class="float-btn wa">
+      <i class="fa-brands fa-whatsapp"></i>
+      <div class="float-label">Soporte</div>
+    </a>
+  </div>
+  <div class="float-item">
+    <a href="https://barber-connect-versionweb.github.io/Barber-connect/" target="_blank" class="float-btn b">
+      <i class="fa-solid fa-calendar-check"></i>
+      <div class="float-label">Reservar Turno</div>
+    </a>
+  </div>
+  <div class="float-item" id="float-download-wrap">
+    <a href="https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/BarberStudio.apk" class="float-btn g" id="float-download">
+      <i class="fa-solid fa-download"></i>
+      <div class="float-label" id="float-download-label">Descargar Studio</div>
+    </a>
+  </div>
+</div>
+
+<script>
+const LINK_STUDIO = "https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/BarberStudio.apk";
+const LINK_CONNECT = "https://bhdmxljthtfomiwgenvf.supabase.co/storage/v1/object/public/Apk/Barber%20Connect.apk";
+
+let currentMode = 'barber';
+
+function setMode(mode) {
+  currentMode = mode;
+  const barberSection = document.getElementById('barber-section');
+  const clientSection = document.getElementById('client-section');
+  const btnBarber = document.getElementById('btn-barber');
+  const btnClient = document.getElementById('btn-client');
+  const floatDl = document.getElementById('float-download');
+  const floatDlLabel = document.getElementById('float-download-label');
+
+  if (mode === 'barber') {
+    barberSection.style.display = 'block';
+    clientSection.style.display = 'none';
+    btnBarber.classList.add('active');
+    btnClient.classList.remove('active');
+    floatDl.href = LINK_STUDIO;
+    floatDlLabel.textContent = 'Descargar Studio';
+    floatDl.style.background = 'var(--g)';
+    floatDl.style.boxShadow = '0 4px 20px rgba(0,255,136,.35)';
+    // Update blobs
+    document.querySelector('.blob-g').style.opacity = '.12';
+    document.querySelector('.blob-b').style.opacity = '.04';
+  } else {
+    barberSection.style.display = 'none';
+    clientSection.style.display = 'block';
+    btnClient.classList.add('active');
+    btnBarber.classList.remove('active');
+    floatDl.href = LINK_CONNECT;
+    floatDlLabel.textContent = 'Descargar Connect';
+    floatDl.style.background = 'var(--b)';
+    floatDl.style.boxShadow = '0 4px 20px rgba(0,210,255,.35)';
+    document.querySelector('.blob-g').style.opacity = '.04';
+    document.querySelector('.blob-b').style.opacity = '.12';
+  }
+
+  // Scroll to top of content
+  window.scrollTo({ top: document.querySelector('.hero').offsetHeight - 80, behavior: 'smooth' });
+}
+
+// Preloader
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('done');
+  }, 700);
+});
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 50) {
+    nav.style.background = 'rgba(5,5,7,.92)';
+  } else {
+    nav.style.background = 'rgba(5,5,7,.7)';
+  }
+});
+
+// Finance tabs interaction
+document.querySelectorAll('.finance-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.finance-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
+// Animate bars on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationPlayState = 'running';
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.bs-bar-fill, .xp-bar-fill, .finance-bar').forEach(el => {
+  observer.observe(el);
+});
+</script>
 </body>
 </html>
